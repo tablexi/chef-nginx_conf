@@ -1,0 +1,31 @@
+server {
+  listen <%= listen %>
+  server_name <%= server_name %>;
+  root <%= root %>;
+
+  <% Array(block).each do |b| -%>
+  <%= b %>
+  <% end -%>
+
+  <% options.each do |k,v| -%>
+  <%= k %> <%= v %>;
+  <% end -%>
+
+  try_files <%= try_files %>;
+
+  <% unless type == :static -%>
+  <% Array(locations).each do |name, location| -%>
+  location <%= name %> {
+    <% location.each do |option,value| -%>
+    <% if value.kind_of?(Hash) -%>
+    <% value.each do |k,v| -%>
+    <%= option %> <%= k %> <%= v %>;
+    <% end -%>
+    <% else -%>
+    <%= option %> <%= value %>;
+    <% end -%>
+    <% end -%>
+  }
+  <% end -%>
+  <% end -%>
+}

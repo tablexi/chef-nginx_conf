@@ -1,0 +1,17 @@
+default['nginx_conf']['listen'] = '80'
+default['nginx_conf']['pre_socket'] = 'http://unix:'
+default['nginx_conf']['options'] = {
+  'client_max_body_size' => '20M',
+  'keepalive_timeout' => '5',
+  'try_files' => "$uri/index.html $uri.html $uri"
+}
+default['nginx_conf']['locations'] = { 
+  '@proxy' => {
+    'proxy_set_header' => {
+      'X-Forwarded-For' => '$proxy_add_x_forwarded_for',
+      'Host' => '$http_host'
+    },
+    'proxy_redirect' => 'off',
+    'proxy_pass' => nil,
+  }
+}

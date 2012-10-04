@@ -1,0 +1,6 @@
+.bundle
+.cache
+.kitchen
+bin
+.rvmrc
+Gemfile.lock

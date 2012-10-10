@@ -31,7 +31,7 @@ describe_recipe 'nginx_conf_test::lwrp' do
       end
 
       it "should include the default location decleration on test5" do
-        file(@path).must_include 'location @proxy'
+        file(@path).must_include('location /')
       end
 
     end
@@ -48,7 +48,7 @@ describe_recipe 'nginx_conf_test::lwrp' do
       end
 
       it "should not include the default location decleration on test6" do
-        file(@path).wont_include 'location @proxy'
+        file(@path).wont_include 'location /'
       end
 
     end

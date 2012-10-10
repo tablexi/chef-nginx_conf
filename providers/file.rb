@@ -9,8 +9,8 @@ action :create do
   type = :dynamic
 
   if new_resource.socket
-    locations['@proxy']['proxy_pass'] = node['nginx_conf']['pre_socket'] + new_resource.socket
-  elsif !locations['@proxy']['proxy_pass']
+    locations['/']['proxy_pass'] = node['nginx_conf']['pre_socket'] + new_resource.socket
+  elsif !locations['/']['proxy_pass']
     type = :static
   end
 

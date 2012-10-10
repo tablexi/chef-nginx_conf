@@ -26,7 +26,6 @@ Rather then accessing the LWRP directly, add a site hash to the `confs` attribut
 
     node['nginx_conf']['confs'] = [{
       'test1.mywebsite.com' => {
-        'root' => "/var/www/myapp",
         'socket' => "/var/www/myapp/shared/tmp/sockets/unicorn.socket"
       },
       'test2.mywebsite.com' => {
@@ -55,9 +54,6 @@ Outputs to sites-available/mywebsite.com:
 
       server_name mywebsite.com;
 
-      client_max_body_size 20M;
-      keepalive_timeout 5;
-
       location @proxy {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
@@ -80,9 +76,6 @@ Outputs to sites-available/mywebsite.com:
       server_name mywebsite.com;
 
       root "/var/www/myapp";
-
-      client_max_body_size 20M;
-      keepalive_timeout 5;
     }
 
 ##Disable##

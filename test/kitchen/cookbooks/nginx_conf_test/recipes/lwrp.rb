@@ -1,7 +1,6 @@
 # test/kitchen/cookbooks/recipes/nginx_conf_test/lwrp.rb
 
 nginx_conf_file "test5.mywebsite.com" do
-  root "/var/www/myapp"
   socket "/var/www/myapp/shared/tmp/sockets/unicorn.socket"
 end
 

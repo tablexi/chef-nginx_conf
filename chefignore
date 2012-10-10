@@ -4,6 +4,9 @@
 # gitignore
 \.gitignore
 
+# rvmrc
+\.rvmrc
+
 # emacs
 *~
 

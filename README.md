@@ -8,6 +8,7 @@ Manage nginx server configuration files.
 #Requirements#
  
  * Nginx recipe.
+ * Ubuntu/Debian
 
 
 #Attributes#
@@ -16,6 +17,30 @@ See a list of all [attributes](https://github.com/firebelly/chef-nginx_conf/tree
 
 
 #Usage#
+
+
+Add the `nginx_conf` recipe to your runlist.
+
+
+##confs##
+
+Rather then accessing the LWRP directly, add a site hash to the `confs` attribute list.
+
+  node['nginx_conf']['confs'] = [{
+    'test1.mywebsite.com' => {
+      'root' => "/var/www/myapp",
+      'socket' => "/var/www/myapp/shared/tmp/sockets/unicorn.socket"
+    },
+    'test2.mywebsite.com' => {
+      'root' => "/var/www/myapp"
+    },
+    'test3.mywebsite.com' => {
+      'action' => :disable
+    },
+    'test4.mywebsite.com' => {
+      'action' => :delete
+    },
+  }]
 
 ##Create##
 
@@ -79,3 +104,13 @@ Removes the symlink and deletes the configuration:
   $ nginx_conf_file "mywebsite.com" do
   $   action :delete
   $ end
+
+
+#Testing#
+
+We use kitchen-test to check basic functionality.  To run tests:
+
+  $ bundle install
+  $ kitchen test
+
+NOTE: This will download a vagrant basebox for Ubuntu 10.04 and setup vagrant at test/kitchen/.kitchen

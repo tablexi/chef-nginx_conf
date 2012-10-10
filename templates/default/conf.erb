@@ -13,8 +13,6 @@ server {
   <%= k %> <%= v %>;
   <% end -%>
 
-  try_files <%= @try_files %>;
-
   <% unless @type == :static -%>
   <% Array(@locations).each do |name, location| -%>
   location <%= name %> {

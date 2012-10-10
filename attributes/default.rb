@@ -4,7 +4,6 @@ default['nginx_conf']['pre_socket'] = 'http://unix:'
 default['nginx_conf']['options'] = {
   'client_max_body_size' => '20M',
   'keepalive_timeout' => '5',
-  'try_files' => "$uri/index.html $uri.html $uri"
 }
 default['nginx_conf']['locations'] = { 
   '@proxy' => {

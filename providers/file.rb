@@ -6,7 +6,6 @@ action :create do
   locations = node['nginx_conf']['locations'].to_hash.merge(new_resource.locations)
   options = node['nginx_conf']['options'].to_hash.merge(new_resource.options)
   server_name = new_resource.server_name || new_resource.name
-  try_files = options.delete('try_files')
   type = :dynamic
 
   if new_resource.socket
@@ -15,9 +14,9 @@ action :create do
     type = :static
   end
 
-  if type == :dynamic
+  if type == :dynamic && options['try_files']
     locations.each do |name, location|
-      try_files << " #{name}" if name.index('@') == 0
+      options['try_files'] << " #{name}" if name.index('@') == 0
     end
   end
 
@@ -34,7 +33,6 @@ action :create do
       :locations =>  locations,
       :root =>  new_resource.root,
       :server_name => server_name,
-      :try_files => try_files,
       :type =>  type
     )
   end

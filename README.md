@@ -57,7 +57,6 @@ Outputs to sites-available/mywebsite.com:
 
       client_max_body_size 20M;
       keepalive_timeout 5;
-      try_files $uri/index.html $uri.html $uri @proxy;
 
       location @proxy {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -84,8 +83,6 @@ Outputs to sites-available/mywebsite.com:
 
       client_max_body_size 20M;
       keepalive_timeout 5;
-      
-      try_files $uri/index.html $uri.html $uri;
     }
 
 ##Disable##

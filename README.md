@@ -42,10 +42,9 @@ Rather then accessing the LWRP directly, add a site hash to the `confs` attribut
 
 ##Create##
 
-Creates a nginx configuration in the sites-available directory, tests it, symlinks to sites-enabled, and restarts nginx.  The only required attribute is root.  See a list of all [LWRP attributes](https://github.com/firebelly/chef-nginx_conf/tree/master/resources/file.rb).
+Creates a nginx configuration in the sites-available directory, tests it, symlinks to sites-enabled, and restarts nginx.  See a list of all [LWRP attributes](https://github.com/firebelly/chef-nginx_conf/tree/master/resources/file.rb).
 
     nginx_conf_file "mywebsite.com" do
-      root "/var/www/myapp"
       socket "/var/www/myapp/shared/tmp/sockets/unicorn.socket"
     end
 
@@ -80,6 +79,8 @@ Outputs to sites-available/mywebsite.com:
       listen 80;
 
       server_name mywebsite.com;
+
+      root "/var/www/myapp";
 
       client_max_body_size 20M;
       keepalive_timeout 5;

@@ -1,7 +1,9 @@
 server {
   listen <%= @listen %>;
   server_name <%= @server_name %>;
+  <% if @root -%>
   root <%= @root %>;
+  <% end -%>
 
   <% Array(@block).each do |b| -%>
   <%= b %>

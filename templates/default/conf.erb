@@ -1,20 +1,20 @@
 server {
-  listen <%= listen %>
-  server_name <%= server_name %>;
-  root <%= root %>;
+  listen <%= @listen %>;
+  server_name <%= @server_name %>;
+  root <%= @root %>;
 
-  <% Array(block).each do |b| -%>
+  <% Array(@block).each do |b| -%>
   <%= b %>
   <% end -%>
 
-  <% options.each do |k,v| -%>
+  <% @options.each do |k,v| -%>
   <%= k %> <%= v %>;
   <% end -%>
 
-  try_files <%= try_files %>;
+  try_files <%= @try_files %>;
 
-  <% unless type == :static -%>
-  <% Array(locations).each do |name, location| -%>
+  <% unless @type == :static -%>
+  <% Array(@locations).each do |name, location| -%>
   location <%= name %> {
     <% location.each do |option,value| -%>
     <% if value.kind_of?(Hash) -%>

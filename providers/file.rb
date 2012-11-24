@@ -8,6 +8,7 @@ action :create do
   server_name = new_resource.server_name || new_resource.name
   type = :dynamic
   proxy_pass = false
+  enabled_sites_dirpath = node['nginx']['dir'] + "/" + 
 
   if type == :dynamic
     locations.each do |name, location|

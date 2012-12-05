@@ -13,9 +13,9 @@ attribute :root, :kind_of => [String, NilClass] # Server root
 attribute :server_name, :kind_of => [String, NilClass] # Server name if different then the name attribute.
 attribute :socket, :kind_of => [String, NilClass] # Path to socket file.
 attribute :template, :kind_of => [String, NilClass], :default => "conf.erb" # Template to use.
-attribute :available_sites_repo, :kind_of => String, :default => "sites-available" # Relative path from node[nginx][dir] to the available sites folder
-attribute :enabled_sites_repo, :kind_of => String, :default => "sites-enabled" # Relative path from node[nginx][dir] to the enabled sites folder 
-attribute :auto_enable_site, :kind_of => Boolean, :default => true
+attribute :available_sites_repo, :kind_of => String # Absolute path to the available sites folder
+attribute :enabled_sites_repo, :kind_of => String # Absolute path to the to the enabled sites folder 
+attribute :auto_enable_site, :kind_of => [TrueClass, FalseClass] , :default => true # Define if you want to link your newly created site conf from sites-availables to sites-enabled
 
 def initialize(*args)
   super

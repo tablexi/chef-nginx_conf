@@ -8,8 +8,8 @@ action :create do
   server_name = new_resource.server_name || new_resource.name
   type = :dynamic
   proxy_pass = false
-  enabled_sites_dirpath = new_resource.enabled_sites_repo || (node['nginx']['dir'] || "") + "/sites-enabled"
-  available_sites_dirpath = new_resource.available_sites_repo || (node['nginx']['dir'] || "") + "/sites-available"
+  enabled_sites_dirpath = new_resource.enabled_sites_repo || "#{node['nginx']['dir']}/sites-enabled"
+  available_sites_dirpath = new_resource.available_sites_repo || "#{node['nginx']['dir']}/sites-available"
 
   if type == :dynamic
     locations.each do |name, location|
@@ -24,20 +24,6 @@ action :create do
     locations['/']['proxy_pass'] = node['nginx_conf']['pre_socket'] + new_resource.socket
   elsif !proxy_pass
     type = :static
-  end
-
-  execute "test-nginx-conf" do
-    command "nginx -t"
-    action :nothing
-    #notifies :restart, resources(:service => "nginx"), new_resource.reload
-  end
-
-  if new_resource.auto_enable_site
-    nginx_conf_file new_resource.name do
-      action :enable
-      available_sites_repo new_resource.available_sites_repo
-      enabled_sites_repo new_resource.enabled_sites_repo
-    end
   end
 
   template "#{available_sites_dirpath}/#{new_resource.name}" do
@@ -55,44 +41,64 @@ action :create do
       :server_name => server_name,
       :type =>  type
     )
-    #notifies :create, resources(:link => "#{enabled_sites_dirpath}/#{new_resource.name}"), :immediately
+  end
+
+  nginx_conf_file "#{new_resource.name}_enable" do
+    action :enable
+    server_name new_resource.name
+    available_sites_repo available_sites_dirpath
+    enabled_sites_repo enabled_sites_dirpath
+    only_if { new_resource.auto_enable_site }
   end
 
   new_resource.updated_by_last_action(true)
 end
 
 action :delete do
-  link "#{enabled_sites_dirpath}/#{new_resource.name}" do
+  enabled_sites_dirpath = new_resource.enabled_sites_repo || "#{node['nginx']['dir']}/sites-enabled"
+  available_sites_dirpath = new_resource.available_sites_repo || "#{node['nginx']['dir']}/sites-available"
+  server_name = new_resource.server_name || new_resource.name
+
+  link "#{enabled_sites_dirpath}/#{server_name}" do
     action :delete
-    to "#{node['nginx']['dir']}/sites-available/#{new_resource.name}"
-    #notifies :restart, resources(:service => "nginx"), new_resource.reload
+    to "#{available_sites_dirpath}/#{server_name}"
+    only_if { available_sites_dirpath != enabled_sites_dirpath }
   end
 
-  template "#{available_sites_dirpath}/#{new_resource.name}" do
+  template "#{available_sites_dirpath}/#{server_name}" do
     action :delete
+    notifies :restart, resources(:service => "nginx"), new_resource.reload
   end
 
   new_resource.updated_by_last_action(true)
 end
 
 action :enable do
-  enabled_sites_dirpath = node['nginx']['dir'] + '/' + new_resource.enabled_sites_repo
-  available_sites_dirpath = node['nginx']['dir'] + '/' + new_resource.available_sites_repo
+  enabled_sites_dirpath = new_resource.enabled_sites_repo || "#{node['nginx']['dir']}/sites-enabled"
+  available_sites_dirpath = new_resource.available_sites_repo || "#{node['nginx']['dir']}/sites-available"
+  server_name = new_resource.server_name || new_resource.name
 
-  link "#{enabled_sites_dirpath}/#{new_resource.name}" do
-    action :nothing
-    to "#{available_sites_dirpath}/#{new_resource.name}"
-    notifies :run, resources(:execute => "test-nginx-conf"), :immediately
+  link "#{enabled_sites_dirpath}/#{server_name}" do
+    to "#{available_sites_dirpath}/#{server_name}"
+    only_if { available_sites_dirpath != enabled_sites_dirpath }
   end
+
+  execute "test-nginx-conf" do
+    command "nginx -t"
+    notifies :restart, resources(:service => "nginx"), new_resource.reload
+  end
+
+  new_resource.updated_by_last_action(true)
 end
 
 action :disable do
-  enabled_sites_dirpath = node['nginx']['dir'] + '/' + new_resource.enabled_sites_repo
-  available_sites_dirpath = node['nginx']['dir'] + '/' + new_resource.available_sites_repo
+  enabled_sites_dirpath = new_resource.enabled_sites_repo || "#{node['nginx']['dir']}/sites-enabled"
+  available_sites_dirpath = new_resource.available_sites_repo || "#{node['nginx']['dir']}/sites-available"
 
   link "#{enabled_sites_dirpath}/#{new_resource.name}" do
     action :delete
     to "#{available_sites_dirpath}/#{new_resource.name}"
+    only_if { available_sites_dirpath != enabled_sites_dirpath }
     notifies :restart, resources(:service => "nginx"), new_resource.reload
   end
 

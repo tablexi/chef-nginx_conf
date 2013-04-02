@@ -8,6 +8,7 @@ action :create do
   server_name = new_resource.server_name || new_resource.name
   type = :dynamic
   proxy_pass = false
+  ssl = false
   enabled_sites_dirpath = new_resource.enabled_sites_repo || "#{node['nginx']['dir']}/sites-enabled"
   available_sites_dirpath = new_resource.available_sites_repo || "#{node['nginx']['dir']}/sites-available"
 
@@ -26,9 +27,40 @@ action :create do
     type = :static
   end
 
+  if new_resource.ssl
+    # Make sure nginx is being compiled with ssl support
+    include_recipe('nginx::http_ssl_module')
+
+    directory "#{node['nginx']['dir']}/ssl" do
+      owner node['nginx']['user'] 
+      group node['nginx']['group']
+      mode "0755"
+    end
+
+    file "#{nginx_root}/ssl/#{new_resource.name}.public.crt" do
+      owner node['nginx']['user'] 
+      group node['nginx']['group']
+      mode "0640"
+      content new_resource.ssl['public']
+    end
+
+    file "#{nginx_root}/ssl/#{new_resource.name}.private.key" do
+      owner node['nginx']['user'] 
+      group node['nginx']['group']
+      mode "0640"
+      content new_resource.ssl['private']
+    end
+
+    ssl = {
+      :certificate => "#{nginx_root}/ssl/#{new_resource.name}.public.crt",
+      :certificate_key => "#{nginx_root}/ssl/#{new_resource.name}.private.key"
+    }
+    listen = '443 ssl' if listen == '80'
+  end
+
   template "#{available_sites_dirpath}/#{new_resource.name}" do
     owner node['nginx']['user'] 
-    group node['nginx']['group'] 
+    group node['nginx']['group']
     mode "755"
     source new_resource.template
     cookbook new_resource.cookbook
@@ -39,7 +71,8 @@ action :create do
       :locations =>  locations,
       :root =>  new_resource.root,
       :server_name => server_name,
-      :type =>  type
+      :type =>  type,
+      :ssl => ssl
     )
   end
 

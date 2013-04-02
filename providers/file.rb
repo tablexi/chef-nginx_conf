@@ -27,8 +27,8 @@ action :create do
   end
 
   template "#{available_sites_dirpath}/#{new_resource.name}" do
-    owner "root"
-    group "root"
+    owner node['nginx']['user'] 
+    group node['nginx']['group'] 
     mode "755"
     source new_resource.template
     cookbook new_resource.cookbook

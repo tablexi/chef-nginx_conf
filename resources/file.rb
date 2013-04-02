@@ -16,7 +16,7 @@ attribute :template, :kind_of => [String, NilClass], :default => "conf.erb" # Te
 attribute :available_sites_repo, :kind_of => String # Absolute path to the available sites folder
 attribute :enabled_sites_repo, :kind_of => String # Absolute path to the to the enabled sites folder 
 attribute :auto_enable_site, :kind_of => [TrueClass, FalseClass] , :default => true # Define if you want to link your newly created site conf from sites-availables to sites-enabled
-attribute :ssl, :kind_of => [Array, NilClass], :default => nil #Allow the creation of ssl cert files.
+attribute :ssl, :kind_of => [Hash, NilClass], :default => nil #Allow the creation of ssl cert files.
 
 def initialize(*args)
   super

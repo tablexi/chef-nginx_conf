@@ -13,8 +13,16 @@ server {
   <%= b %>
   <% end -%>
 
-  <% @options.each do |k,v| -%>
-  <%= k %> <%= v %>;
+  <% @options.each do |option,value| -%>
+  <% if value.kind_of?(Hash) -%>
+  <% value.each do |k,v| -%>
+  <%= option %> <%= k %> <%= v %>;
+  <% end -%>
+  <% elsif value.kind_of?(Array) -%>
+  <%= option %><% value.each do |v| -%> <%= v %><% end -%>;
+  <% else -%>
+  <%= option %> <%= value %>;
+  <% end -%>
   <% end -%>
 
   <% unless @type == :static -%>

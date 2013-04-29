@@ -1,3 +1,4 @@
+name						 "nginx_conf"
 maintainer       "Firebelly Design"
 maintainer_email "lloyd@firebellydesign.com"
 license          "GNU Public License 3.0"

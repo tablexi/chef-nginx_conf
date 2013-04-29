@@ -3,8 +3,8 @@ require 'yaml'
 
 action :create do
   listen = new_resource.listen || node['nginx_conf']['listen']
-  locations = node['nginx_conf']['locations'].to_hash.merge(new_resource.locations)
-  options = node['nginx_conf']['options'].to_hash.merge(new_resource.options)
+  locations = node.default['nginx_conf']['locations'].to_hash.merge(new_resource.locations)
+  options = node.default['nginx_conf']['options'].to_hash.merge(new_resource.options)
   server_name = new_resource.server_name || new_resource.name
   type = :dynamic
   proxy_pass = false

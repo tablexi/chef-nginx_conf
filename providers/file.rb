@@ -2,8 +2,8 @@ require 'chef/util/file_edit'
 require 'yaml'
 
 action :create do
-  listen = new_resource.listen || node['nginx_conf']['listen']
-  locations = node['nginx_conf']['locations'].to_hash.merge(new_resource.locations)
+  listen = new_resource.listen || node['nginx_conf']['listen'].to_str
+  locations = JSON.parse(node['nginx_conf']['locations'].to_json).merge(new_resource.locations)
   options = node['nginx_conf']['options'].to_hash.merge(new_resource.options)
   server_name = new_resource.server_name || new_resource.name
   type = :dynamic
@@ -22,7 +22,7 @@ action :create do
   end
 
   if new_resource.socket && locations.has_key?('/')
-    locations['/']['proxy_pass'] = node['nginx_conf']['pre_socket'] + new_resource.socket
+    locations['/']['proxy_pass'] = node['nginx_conf']['pre_socket'].to_str + new_resource.socket
   elsif !proxy_pass
     type = :static
   end

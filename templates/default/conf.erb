@@ -1,3 +1,5 @@
+# Maintained by Chef.  Any manual changes will be overwritten
+
 server {
   listen <%= @listen %>;
   server_name <%= @server_name %>;
@@ -8,8 +10,8 @@ server {
   <% if @root -%>
   root <%= @root %>;
   <% end -%>
-
   <% Array(@block).each do |b| -%>
+
   <%= b %>
   <% end -%>
 
@@ -19,7 +21,9 @@ server {
   <%= option %> <%= k %> <%= v %>;
   <% end -%>
   <% elsif value.kind_of?(Array) -%>
-  <%= option %><% value.each do |v| -%> <%= v %><% end -%>;
+  <% value.each do |v| -%>
+  <%= option %> <%= v %>;
+  <% end -%>
   <% else -%>
   <%= option %> <%= value %>;
   <% end -%>
@@ -32,6 +36,10 @@ server {
     <% if value.kind_of?(Hash) -%>
     <% value.each do |k,v| -%>
     <%= option %> <%= k %> <%= v %>;
+    <% end -%>
+    <% elsif value.kind_of?(Array) -%>
+    <% value.each do |v| -%>
+    <%= option %> <%= v %>;
     <% end -%>
     <% else -%>
     <%= option %> <%= value %>;

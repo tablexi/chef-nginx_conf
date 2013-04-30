@@ -16,3 +16,5 @@ bin/*
 .rvmrc
 .kitchen
 
+.kitchen/
+.kitchen.local.yml

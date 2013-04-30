@@ -98,7 +98,7 @@ action :delete do
     only_if { available_sites_dirpath != enabled_sites_dirpath }
   end
 
-  template "#{available_sites_dirpath}/#{server_name}" do
+  file "#{available_sites_dirpath}/#{server_name}" do
     action :delete
     notifies :restart, resources(:service => "nginx"), new_resource.reload
   end

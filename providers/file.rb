@@ -117,7 +117,7 @@ action :enable do
   end
 
   execute "test-nginx-conf" do
-    command "nginx -t"
+    command "#{node['nginx']['binary']} -t"
     notifies :restart, resources(:service => "nginx"), new_resource.reload
   end
 

@@ -2,9 +2,9 @@ require 'chef/util/file_edit'
 require 'yaml'
 
 action :create do
-  listen = new_resource.listen || node['nginx_conf']['listen'].to_str
-  locations = JSON.parse(node['nginx_conf']['locations'].to_json).merge(new_resource.locations)
-  options = node['nginx_conf']['options'].to_hash.merge(new_resource.options)
+  listen = new_resource.listen || node['nginx_conf']['listen']
+  locations = node.send(new_resource.precedence)['nginx_conf']['locations'].to_hash.merge(new_resource.locations)
+  options = node.send(new_resource.precedence)['nginx_conf']['options'].to_hash.merge(new_resource.options)
   server_name = new_resource.server_name || new_resource.name
   type = :dynamic
   proxy_pass = false
@@ -22,7 +22,7 @@ action :create do
   end
 
   if new_resource.socket && locations.has_key?('/')
-    locations['/']['proxy_pass'] = node['nginx_conf']['pre_socket'].to_str + new_resource.socket
+    locations['/']['proxy_pass'] = node['nginx_conf']['pre_socket'] + new_resource.socket
   elsif !proxy_pass
     type = :static
   end
@@ -98,7 +98,7 @@ action :delete do
     only_if { available_sites_dirpath != enabled_sites_dirpath }
   end
 
-  file "#{available_sites_dirpath}/#{server_name}" do
+  template "#{available_sites_dirpath}/#{server_name}" do
     action :delete
     notifies :restart, resources(:service => "nginx"), new_resource.reload
   end
@@ -117,7 +117,7 @@ action :enable do
   end
 
   execute "test-nginx-conf" do
-    command "#{node['nginx']['binary']} -t"
+    command "nginx -t"
     notifies :restart, resources(:service => "nginx"), new_resource.reload
   end
 

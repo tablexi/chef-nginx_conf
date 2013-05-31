@@ -15,37 +15,9 @@ server {
   <%= b %>
   <% end -%>
 
-  <% @options.each do |option,value| -%>
-  <% if value.kind_of?(Hash) -%>
-  <% value.each do |k,v| -%>
-  <%= option %> <%= k %> <%= v %>;
-  <% end -%>
-  <% elsif value.kind_of?(Array) -%>
-  <% value.each do |v| -%>
-  <%= option %> <%= v %>;
-  <% end -%>
-  <% else -%>
-  <%= option %> <%= value %>;
-  <% end -%>
-  <% end -%>
+<%= nginx_conf_options(@options, 1) %>
 
   <% unless @type == :static -%>
-  <% Array(@locations).each do |name, location| -%>
-  location <%= name %> {
-    <% location.each do |option,value| -%>
-    <% if value.kind_of?(Hash) -%>
-    <% value.each do |k,v| -%>
-    <%= option %> <%= k %> <%= v %>;
-    <% end -%>
-    <% elsif value.kind_of?(Array) -%>
-    <% value.each do |v| -%>
-    <%= option %> <%= v %>;
-    <% end -%>
-    <% else -%>
-    <%= option %> <%= value %>;
-    <% end -%>
-    <% end -%>
-  }
-  <% end -%>
+<%= nginx_conf_options(@locations, 1, 'location') %>
   <% end -%>
 }

@@ -18,27 +18,35 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-def nginx_conf_options(options, level=0, type=false) do
+# Helper function for displaying configuration options.
+def nginx_conf_options(options, level=0, type=false)
   indent = '  ' * level
   output = []
   options.each do |option,value|
-    if type == 'location'
+    if type == 'locations'
       output << <<-CFG
-#{indent}location #{option} {
-#{nginx_conf_locations(value,level+1)}
-#{indent}}
 
+#{indent}location #{option} {
+#{nginx_conf_options(value,level+1)}
+#{indent}}
 CFG
     elsif type == 'if'
       output << <<-CFG
-#{indent}if (#{option}) {
-#{nginx_conf_locations(value,level+1)}
-#{indent}}
 
+#{indent}if (#{option}) {
+#{nginx_conf_options(value,level+1)}
+#{indent}}
+CFG
+    elsif type == 'upstream'
+      output << <<-CFG
+
+#{indent}upstream #{option} {
+#{nginx_conf_options(value,level+1)}
+#{indent}}
 CFG
     else
       if value.kind_of?(Hash)
-        if ['locations', 'if'].include? option
+        if ['locations', 'if', 'upstream'].include? option
           output << nginx_conf_options(value, level, option)
         else
           value.each do |k,v|

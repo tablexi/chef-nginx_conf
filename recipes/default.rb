@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-Array(node['nginx_conf']['confs']).each do |site|
+Array(node[:nginx_conf][:confs]).each do |site|
   site.each do |name,options|
     conf = {
       'action' => :create,

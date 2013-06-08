@@ -13,3 +13,7 @@
 * removed available_sites_repo since we are integrating more with nginx cookbook
 * removed enabled_sites_repo since we are integrating more with nginx cookbook
 * added nginx_conf_options function to handle template configuration
+
+## v0.0.9:
+
+* Added site_type to LWRP to manually set dynamic vs static sites and updated docs.

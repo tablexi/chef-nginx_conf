@@ -3,23 +3,19 @@ action :create do
   locations = node.send(new_resource.precedence)[:nginx_conf][:locations].to_hash.merge(new_resource.locations)
   options = node.send(new_resource.precedence)[:nginx_conf][:options].to_hash.merge(new_resource.options)
   server_name = new_resource.server_name || new_resource.name
-  type = :dynamic
-  proxy_pass = false
+  site_type = new_resource.site_type
   ssl = false
 
-  if type == :dynamic
+  if site_type == :dynamic
     locations.each do |name, location|
-      proxy_pass = true if location['proxy_pass']
       if options['try_files']
         options['try_files'] << " #{name}" if name.index('@') == 0
       end
     end
-  end
 
-  if new_resource.socket && locations.has_key?('/')
-    locations['/']['proxy_pass'] = node[:nginx_conf][:pre_socket].to_s + new_resource.socket
-  elsif !proxy_pass
-    type = :static
+    if new_resource.socket && locations.has_key?('/')
+      locations['/']['proxy_pass'] = node[:nginx_conf][:pre_socket].to_s + new_resource.socket
+    end
   end
 
   if new_resource.ssl
@@ -66,7 +62,7 @@ action :create do
       :locations =>  locations,
       :root =>  new_resource.root,
       :server_name => server_name,
-      :type =>  type,
+      :type =>  site_type,
       :ssl => ssl
     )
   end

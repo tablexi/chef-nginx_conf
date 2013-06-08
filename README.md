@@ -29,7 +29,8 @@ Rather then accessing the LWRP directly, add a site hash to the `confs` attribut
         'socket' => "/var/www/myapp/shared/tmp/sockets/unicorn.socket"
       },
       'test2.mywebsite.com' => {
-        'root' => "/var/www/myapp"
+        'root' => "/var/www/myapp",
+        'site_type' => :static
       },
       'test3.mywebsite.com' => {
         'action' => :disable
@@ -66,6 +67,7 @@ Creating a static conf is even easier.
   
     nginx_conf_file "mywebsite.com" do
       root "/var/www/myapp"
+      site_type :static
     end
 
 Outputs to sites-available/mywebsite.com:

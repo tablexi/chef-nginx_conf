@@ -17,3 +17,7 @@
 ## v0.0.9:
 
 * Added site_type to LWRP to manually set dynamic vs static sites and updated docs.
+
+## v0.1.0:
+
+* Added single upstream to LWRP.

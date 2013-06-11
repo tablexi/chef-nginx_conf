@@ -2,6 +2,7 @@ action :create do
   listen = new_resource.listen || node[:nginx_conf][:listen]
   locations = node.send(new_resource.precedence)[:nginx_conf][:locations].to_hash.merge(new_resource.locations)
   options = node.send(new_resource.precedence)[:nginx_conf][:options].to_hash.merge(new_resource.options)
+  upstream = node.send(new_resource.precedence)[:nginx_conf][:upstream].to_hash.merge(new_resource.upstream)
   server_name = new_resource.server_name || new_resource.name
   site_type = new_resource.site_type
   ssl = false
@@ -58,6 +59,7 @@ action :create do
     variables(
       :block =>  new_resource.block,
       :options =>  options,
+      :upstream => upstream,
       :listen => listen,
       :locations =>  locations,
       :root =>  new_resource.root,

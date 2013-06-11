@@ -2,6 +2,7 @@ default[:nginx_conf][:confs] = []
 default[:nginx_conf][:listen] = '80'
 default[:nginx_conf][:pre_socket] = 'http://unix:'
 default[:nginx_conf][:options] = {}
+default[:nginx_conf][:upstream] = {}
 default[:nginx_conf][:locations] = {
   '/' => {
     'proxy_set_header' => {

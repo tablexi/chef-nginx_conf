@@ -4,14 +4,9 @@ action :create do
   options = node.send(new_resource.precedence)[:nginx_conf][:options].to_hash.merge(new_resource.options)
   upstream = node.send(new_resource.precedence)[:nginx_conf][:upstream].to_hash.merge(new_resource.upstream)
   server_name = new_resource.server_name || new_resource.name
+  conf_name = new_resource.conf_name || new_resource.name
   site_type = new_resource.site_type
   ssl = false
-
-  if server_name.kind_of? Array
-    name = server_name[0]
-  else
-    name = server_name
-  end
 
   if site_type == :dynamic
     locations.each do |name, location|
@@ -35,14 +30,14 @@ action :create do
       mode '0755'
     end
 
-    file "#{node[:nginx][:dir]}/ssl/#{name}.public.crt" do
+    file "#{node[:nginx][:dir]}/ssl/#{conf_name}.public.crt" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
       content new_resource.ssl['public']
     end
 
-    file "#{node[:nginx][:dir]}/ssl/#{name}.private.key" do
+    file "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
@@ -50,13 +45,13 @@ action :create do
     end
 
     ssl = {
-      :certificate => "#{node[:nginx][:dir]}/ssl/#{name}.public.crt",
-      :certificate_key => "#{node[:nginx][:dir]}/ssl/#{name}.private.key"
+      :certificate => "#{node[:nginx][:dir]}/ssl/#{conf_name}.public.crt",
+      :certificate_key => "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key"
     }
     listen = '443 ssl' if listen == '80'
   end
 
-  template "#{node[:nginx][:dir]}/sites-available/#{server_name}" do
+  template "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do
     owner node[:nginx][:user] 
     group node[:nginx][:group]
     mode '755'
@@ -75,8 +70,8 @@ action :create do
     )
   end
 
-  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{name}"
+  link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
     only_if { new_resource.auto_enable_site }
     notifies :restart, resources(:service => 'nginx'), new_resource.reload
   end
@@ -86,19 +81,14 @@ end
 
 action :delete do
   server_name = new_resource.server_name || new_resource.name
+  conf_name = new_resource.conf_name || new_resource.name
 
-  if server_name.kind_of? Array
-    name = server_name[0]
-  else
-    name = server_name
-  end
-
-  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{name}"
+  link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
     action :delete
   end
 
-  file "#{node[:nginx][:dir]}/sites-available/#{name}" do
+  file "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do
     action :delete
     notifies :restart, resources(:service => 'nginx'), new_resource.reload
   end
@@ -108,15 +98,10 @@ end
 
 action :enable do
   server_name = new_resource.server_name || new_resource.name
+  conf_name = new_resource.conf_name || new_resource.name
 
-  if server_name.kind_of? Array
-    name = server_name[0]
-  else
-    name = server_name
-  end
-
-  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{name}"
+  link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
   end
 
   execute 'test-nginx-conf' do
@@ -129,15 +114,10 @@ end
 
 action :disable do
   server_name = new_resource.server_name || new_resource.name
+  conf_name = new_resource.conf_name || new_resource.name
 
-  if server_name.kind_of? Array
-    name = server_name[0]
-  else
-    name = server_name
-  end
-
-  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{name}"
+  link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
     action :delete
     notifies :restart, resources(:service => 'nginx'), new_resource.reload
   end

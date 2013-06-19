@@ -12,6 +12,7 @@ attribute :upstream, :kind_of => [Hash, NilClass], :default => {} # Key value pa
 attribute :reload, :kind_of => [Symbol, NilClass], :default => :delayed # How soon should we restart nginx.
 attribute :root, :kind_of => [String, NilClass] # Server root
 attribute :server_name, :kind_of => [String, Array, NilClass] # Server name if different then the name attribute.
+attribute :conf_name, :kind_of => [String, NilClass] # Configuration name.
 attribute :socket, :kind_of => [String, NilClass] # Path to socket file.
 attribute :template, :kind_of => [String, NilClass] # Template to use.
 attribute :auto_enable_site, :kind_of => [TrueClass, FalseClass] , :default => true # Define if you want to link your newly created site conf from sites-availables to sites-enabled

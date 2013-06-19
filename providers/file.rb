@@ -7,6 +7,12 @@ action :create do
   site_type = new_resource.site_type
   ssl = false
 
+  if server_name.kind_of? Array
+    name = server_name[0]
+  else
+    name = server_name
+  end
+
   if site_type == :dynamic
     locations.each do |name, location|
       if options['try_files']
@@ -29,14 +35,14 @@ action :create do
       mode '0755'
     end
 
-    file "#{node[:nginx][:dir]}/ssl/#{server_name}.public.crt" do
+    file "#{node[:nginx][:dir]}/ssl/#{name}.public.crt" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
       content new_resource.ssl['public']
     end
 
-    file "#{node[:nginx][:dir]}/ssl/#{server_name}.private.key" do
+    file "#{node[:nginx][:dir]}/ssl/#{name}.private.key" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
@@ -44,8 +50,8 @@ action :create do
     end
 
     ssl = {
-      :certificate => "#{node[:nginx][:dir]}/ssl/#{server_name}.public.crt",
-      :certificate_key => "#{node[:nginx][:dir]}/ssl/#{server_name}.private.key"
+      :certificate => "#{node[:nginx][:dir]}/ssl/#{name}.public.crt",
+      :certificate_key => "#{node[:nginx][:dir]}/ssl/#{name}.private.key"
     }
     listen = '443 ssl' if listen == '80'
   end
@@ -69,8 +75,8 @@ action :create do
     )
   end
 
-  link "#{node[:nginx][:dir]}/sites-enabled/#{server_name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{server_name}"
+  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{name}"
     only_if { new_resource.auto_enable_site }
     notifies :restart, resources(:service => 'nginx'), new_resource.reload
   end
@@ -79,14 +85,20 @@ action :create do
 end
 
 action :delete do
-  server_name = new_resource.server_name || new_resource.name  
+  server_name = new_resource.server_name || new_resource.name
 
-  link "#{node[:nginx][:dir]}/sites-enabled/#{server_name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{server_name}"
+  if server_name.kind_of? Array
+    name = server_name[0]
+  else
+    name = server_name
+  end
+
+  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{name}"
     action :delete
   end
 
-  file "#{node[:nginx][:dir]}/sites-available/#{server_name}" do
+  file "#{node[:nginx][:dir]}/sites-available/#{name}" do
     action :delete
     notifies :restart, resources(:service => 'nginx'), new_resource.reload
   end
@@ -97,8 +109,14 @@ end
 action :enable do
   server_name = new_resource.server_name || new_resource.name
 
-  link "#{node[:nginx][:dir]}/sites-enabled/#{server_name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{server_name}"
+  if server_name.kind_of? Array
+    name = server_name[0]
+  else
+    name = server_name
+  end
+
+  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{name}"
   end
 
   execute 'test-nginx-conf' do
@@ -112,8 +130,14 @@ end
 action :disable do
   server_name = new_resource.server_name || new_resource.name
 
-  link "#{node[:nginx][:dir]}/sites-enabled/#{server_name}" do
-    to "#{node[:nginx][:dir]}/sites-available/#{server_name}"
+  if server_name.kind_of? Array
+    name = server_name[0]
+  else
+    name = server_name
+  end
+
+  link "#{node[:nginx][:dir]}/sites-enabled/#{name}" do
+    to "#{node[:nginx][:dir]}/sites-available/#{name}"
     action :delete
     notifies :restart, resources(:service => 'nginx'), new_resource.reload
   end

@@ -3,7 +3,7 @@
 <% if !@upstream.empty? %><%= nginx_conf_options(@upstream,0,'upstream') %><% end %>
 server {
   listen <%= @listen %>;
-  server_name <%= @server_name %>;
+  server_name <%= Array(@server_name).join(', ') %>;
   <% if @ssl %>ssl_certificate <%= @ssl[:certificate] %>;
   ssl_certificate_key <% @ssl[:certiciate_key] %>;<% end %>
   <% if @root %>root <%= @root %>;<% end %>

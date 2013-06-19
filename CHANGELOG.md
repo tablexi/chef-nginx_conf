@@ -21,3 +21,8 @@
 ## v0.1.0:
 
 * Added single upstream to LWRP.
+
+## v0.1.1:
+
+* Allow for an array of server_name attributes.
+* conf_name attribute added.  Define the conf_name independently of the server_name.

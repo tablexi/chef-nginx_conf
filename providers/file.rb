@@ -52,7 +52,7 @@ EOH
       :certificate => "#{node[:nginx][:dir]}/ssl/#{conf_name}.public.crt",
       :certificate_key => "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key"
     }
-    listen = '443' if listen == '80'
+    listen = '443 ssl' if listen == '80'
   end
 
   template "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do

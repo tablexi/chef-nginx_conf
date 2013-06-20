@@ -22,9 +22,6 @@ action :create do
   end
 
   if new_resource.ssl
-    # Make sure nginx is being compiled with ssl support
-    include_recipe('nginx::http_ssl_module')
-
     directory "#{node[:nginx][:dir]}/ssl" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
@@ -49,7 +46,7 @@ action :create do
       :certificate => "#{node[:nginx][:dir]}/ssl/#{conf_name}.public.crt",
       :certificate_key => "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key"
     }
-    listen = '443 ssl' if listen == '80'
+    listen = '443' if listen == '80'
   end
 
   template "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do

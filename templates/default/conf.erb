@@ -4,8 +4,9 @@
 server {
   listen <%= @listen %>;
   server_name <%= Array(@server_name).join(', ') %>;
-  <% if @ssl %>ssl_certificate <%= @ssl[:certificate] %>;
-  ssl_certificate_key <% @ssl[:certiciate_key] %>;<% end %>
+  <% if @ssl %>ssl on;
+  ssl_certificate <%= @ssl[:certificate] %>;
+  ssl_certificate_key <%= @ssl[:certificate_key] %>;<% end %>
   <% if @root %>root <%= @root %>;<% end %>
   <% Array(@block).each do |b| %>
 

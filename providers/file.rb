@@ -32,14 +32,20 @@ action :create do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
-      content new_resource.ssl['public']
+      content  <<-EOH
+# Managed by Chef.  Local changes will be overwritten.
+#{new_resource.ssl['public']}
+EOH
     end
 
     file "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
-      content new_resource.ssl['private']
+      content <<-EOH
+# Maintained by Chef.  Local changes will be overwritten.
+#{new_resource.ssl['private']}
+EOH
     end
 
     ssl = {

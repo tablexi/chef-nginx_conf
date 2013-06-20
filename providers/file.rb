@@ -1,11 +1,12 @@
 action :create do
   listen = new_resource.listen || node[:nginx_conf][:listen]
-  locations = node.send(new_resource.precedence)[:nginx_conf][:locations].to_hash.merge(new_resource.locations)
-  options = node.send(new_resource.precedence)[:nginx_conf][:options].to_hash.merge(new_resource.options)
-  upstream = node.send(new_resource.precedence)[:nginx_conf][:upstream].to_hash.merge(new_resource.upstream)
+  locations = JSON.parse(node.send(new_resource.precedence)[:nginx_conf][:locations].to_hash.merge(new_resource.locations).to_json)
+  options = JSON.parse(node.send(new_resource.precedence)[:nginx_conf][:options].to_hash.merge(new_resource.options).to_json)
+  upstream = JSON.parse(node.send(new_resource.precedence)[:nginx_conf][:upstream].to_hash.merge(new_resource.upstream).to_json)
   server_name = new_resource.server_name || new_resource.name
   conf_name = new_resource.conf_name || new_resource.name
   site_type = new_resource.site_type
+  socket = new_resource.socket
   ssl = false
 
   if site_type == :dynamic
@@ -15,8 +16,8 @@ action :create do
       end
     end
 
-    if new_resource.socket && locations.has_key?('/')
-      locations['/']['proxy_pass'] = node[:nginx_conf][:pre_socket].to_s + new_resource.socket
+    if socket && locations.has_key?('/')
+      locations['/']['proxy_pass'] = node[:nginx_conf][:pre_socket].to_s + socket.to_s
     end
   end
 

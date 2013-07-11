@@ -26,3 +26,16 @@
 
 * Allow for an array of server_name attributes.
 * conf_name attribute added.  Define the conf_name independently of the server_name.
+
+## v0.2:
+
+* Fixed ssl creation issues.
+* Update listen resource to allow for arrays.
+
+## v0.2.1:
+
+* removed explicit 443 listen port.
+
+## v0.2.2:
+
+* updated default recipe to actually mimic LWRP reources.

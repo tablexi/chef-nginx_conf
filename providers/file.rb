@@ -1,5 +1,5 @@
 action :create do
-  listen = new_resource.listen || node[:nginx_conf][:listen]
+  listen = Array(new_resource.listen || node[:nginx_conf][:listen])
   locations = JSON.parse(node.send(new_resource.precedence)[:nginx_conf][:locations].to_hash.merge(new_resource.locations).to_json)
   options = JSON.parse(node.send(new_resource.precedence)[:nginx_conf][:options].to_hash.merge(new_resource.options).to_json)
   upstream = JSON.parse(node.send(new_resource.precedence)[:nginx_conf][:upstream].to_hash.merge(new_resource.upstream).to_json)
@@ -52,7 +52,6 @@ EOH
       :certificate => "#{node[:nginx][:dir]}/ssl/#{conf_name}.public.crt",
       :certificate_key => "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key"
     }
-    listen = '443 ssl' if listen == '80'
   end
 
   template "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do

@@ -1,10 +1,11 @@
 # Maintained by Chef.  Local changes will be overwritten
 
 <% if !@upstream.empty? %><%= nginx_conf_options(@upstream,0,'upstream') %><% end %>
-server {
-  listen <%= @listen %>;
+server {<% Array(@listen).each do |listen| %>
+  listen <%= listen %>;<% end %>
   server_name <%= Array(@server_name).join(', ') %>;
-  <% if @ssl %>ssl_certificate <%= @ssl[:certificate] %>;
+  <% if @ssl %>ssl on;
+  ssl_certificate <%= @ssl[:certificate] %>;
   ssl_certificate_key <%= @ssl[:certificate_key] %>;<% end %>
   <% if @root %>root <%= @root %>;<% end %>
   <% Array(@block).each do |b| %>

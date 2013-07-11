@@ -22,30 +22,42 @@ Array(node[:nginx_conf][:confs]).each do |site|
   site.each do |name,options|
     conf = {
       'action' => :create,
-      'cookbook' => nil,
       'block' => nil,
+      'cookbook' => nil,
       'listen' => nil,
       'locations' => nil,
       'options' => nil,
+      'upstream' => nil,
       'reload' => nil,
       'root' => nil,
       'server_name' => nil,
+      'conf_name' => nil,
       'socket' => nil,
-      'template' => nil
+      'template' => nil,
+      'auto_enable_site' => true,
+      'ssl' => nil,
+      'precedence' => :default,
+      'site_type' => :dynamic,
     }.merge(options)
 
     nginx_conf_file name do
       action conf['action']
-      cookbook conf['cookbook']
       block conf['block']
+      cookbook conf['cookbook']
       listen conf['listen']
       locations conf['locations']
       options conf['options']
+      upstream conf['upstrea']
       reload conf['reload']
       root conf['root']
       server_name conf['server_name']
+      conf_name conf['conf_name']
       socket conf['socket']
       template conf['template']
+      auto_enable_site conf['auto_enable_site']
+      ssl conf['ssl']
+      precedence conf['precedence']
+      site_type conf['site_type'].to_sym
     end
   end
 end

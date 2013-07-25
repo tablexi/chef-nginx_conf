@@ -1,12 +1,18 @@
-source :rubygems
+source 'https://rubygems.org'
 
-group :development do
-	gem 'berkshelf'
-	gem 'test-kitchen', git: 'git://github.com/opscode/test-kitchen.git', branch: '1.0'
-	gem "strainer", :git => "git://github.com/customink/strainer.git"
-	gem 'foodcritic', '~> 1.7.0'
-	gem "chefspec", :git => "git://github.com/acrmp/chefspec.git"
-	gem "fauxhai", :git => "git://github.com/customink/fauxhai.git"
-	gem 'gherkin', '<= 2.11.6' # http://stackoverflow.com/a/15855623
+gem 'chef',       ENV['CHEF_VERSION'] || '~> 11.0.0'
+gem 'yard',       '~> 0.8.6'
+
+group :test do
+  gem 'chefspec',     '~> 1.3.1'
+  gem 'strainer',     '~> 2.0.0'
+  gem 'foodcritic'
+  gem 'test-kitchen', '~> 1.0.0.alpha'
+  gem 'gherkin', '<= 2.11.6'
 end
-gem 'kitchen-vagrant', :group => :integration
+
+group :integration do
+  gem 'berkshelf',          '~> 1.0'
+  gem 'test-kitchen',       '~> 1.0.0.alpha'
+  gem 'kitchen-vagrant',    '~> 0.9.0'
+end

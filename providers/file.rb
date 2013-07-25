@@ -54,10 +54,11 @@ EOH
     }
   end
 
-  execute 'test-nginx-conf' do
+  execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
     action :nothing
     command "#{node[:nginx][:binary]} -t"
-    notifies :restart, resources(:service => 'nginx'), new_resource.reload
+    only_if { new_resource.auto_enable_site }
+    notifies :restart, 'service[nginx]', new_resource.reload
   end
 
   template "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do
@@ -77,20 +78,19 @@ EOH
       :type =>  site_type,
       :ssl => ssl
     )
-    notifies :run, resource(:execute => 'test-nginx-conf'), new_resource.reload
+    notifies :run, 'execute[test-nginx-conf]', new_resource.reload
   end
 
   link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
     to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
     only_if { new_resource.auto_enable_site }
-    notifies :run, resource(:execute => 'test-nginx-conf'), new_resource.reload
+    notifies :run, 'execute[test-nginx-conf]', new_resource.reload
   end
 
   new_resource.updated_by_last_action(true)
 end
 
 action :delete do
-  server_name = new_resource.server_name || new_resource.name
   conf_name = new_resource.conf_name || new_resource.name
 
   link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
@@ -100,38 +100,36 @@ action :delete do
 
   file "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do
     action :delete
-    notifies :restart, resources(:service => 'nginx'), new_resource.reload
+    notifies :restart, 'service[nginx]', new_resource.reload
   end
 
   new_resource.updated_by_last_action(true)
 end
 
 action :enable do
-  server_name = new_resource.server_name || new_resource.name
   conf_name = new_resource.conf_name || new_resource.name
 
-  execute 'test-nginx-conf' do
+  execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
     action :nothing
     command "#{node[:nginx][:binary]} -t"
-    notifies :restart, resources(:service => 'nginx'), new_resource.reload
+    notifies :restart, 'service[nginx]', new_resource.reload
   end
 
   link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
     to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
-    notifies :run, resource(:execute => 'test-nginx-conf'), new_resource.reload
+    notifies :run, 'execute[test-nginx-conf]', new_resource.reload
   end
 
   new_resource.updated_by_last_action(true)
 end
 
 action :disable do
-  server_name = new_resource.server_name || new_resource.name
   conf_name = new_resource.conf_name || new_resource.name
 
   link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
     to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
     action :delete
-    notifies :restart, resources(:service => 'nginx'), new_resource.reload
+    notifies :restart, 'service[nginx]', new_resource.reload
   end
 
   new_resource.updated_by_last_action(true)

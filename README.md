@@ -5,9 +5,8 @@ Manage nginx server configuration files.
 
 
 #Requirements#
- 
- * Nginx recipe.
- * Ubuntu/Debian
+ * Chef >= 11.0
+ * Nginx cookbook
 
 
 #Attributes#

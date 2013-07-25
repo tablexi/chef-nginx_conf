@@ -4,4 +4,5 @@ rvm:
 env:
   - CHEF_VERSION='~> 10.0'
   - CHEF_VERSION='~> 11.0'
+before_script: bundle exec berks install
 script: bundle exec strainer test

@@ -1,1 +1,0 @@
-# test/kitchen/cookbooks/recipes/nginx_conf_test/default.rb

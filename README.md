@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/firebelly/chef-nginx_conf.png)](https://travis-ci.org/firebelly/chef-nginx_conf)
 #Description#
 
 Manage nginx server configuration files.

@@ -54,7 +54,7 @@ EOH
     }
   end
 
-  execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
+  test_nginx = execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
     action :nothing
     command "#{node[:nginx][:binary]} -t"
     only_if { new_resource.auto_enable_site }
@@ -78,13 +78,13 @@ EOH
       :type =>  site_type,
       :ssl => ssl
     )
-    notifies :run, 'execute[test-nginx-conf]', new_resource.reload
+    notifies :run, test_nginx, new_resource.reload
   end
 
   link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
     to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
     only_if { new_resource.auto_enable_site }
-    notifies :run, 'execute[test-nginx-conf]', new_resource.reload
+    notifies :run, test_nginx, new_resource.reload
   end
 
   new_resource.updated_by_last_action(true)
@@ -109,7 +109,7 @@ end
 action :enable do
   conf_name = new_resource.conf_name || new_resource.name
 
-  execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
+  test_nginx = execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
     action :nothing
     command "#{node[:nginx][:binary]} -t"
     notifies :restart, 'service[nginx]', new_resource.reload
@@ -117,7 +117,7 @@ action :enable do
 
   link "#{node[:nginx][:dir]}/sites-enabled/#{conf_name}" do
     to "#{node[:nginx][:dir]}/sites-available/#{conf_name}"
-    notifies :run, 'execute[test-nginx-conf]', new_resource.reload
+    notifies :run, test_nginx, new_resource.reload
   end
 
   new_resource.updated_by_last_action(true)

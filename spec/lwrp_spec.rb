@@ -12,7 +12,7 @@ describe 'nginx_conf_file' do
     it 'should create a template file' do
       expect(@chef_run).to create_file "#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1"
     end
-
+ 
     it 'template should notify delayed execute test' do
       pending 'notify delayed resource error'
       expect(@chef_run.template("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify 'execute[test-nginx-conf-testapp1-create]', :run
@@ -35,6 +35,20 @@ describe 'nginx_conf_file' do
     it 'should restart nginx' do
       pending 'notify delayed resource error'
     	expect(@chef_run.execute("#{@chef_run.node[:nginx][:binary]} -t")).to notify 'service[nginx]', :restart
+    end
+
+    describe 'ssl' do
+      it 'should create ssl directory' do
+        expect(@chef_run).to create_directory("#{@chef_run.node[:nginx][:dir]}/ssl")
+      end
+      it 'should create testapp3 cert files' do
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/testapp3.public.crt", 'crt')
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/testapp3.private.key", 'key')
+      end
+      it 'should create testapp4 cert file with set name' do
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/test-ssl.public.crt", 'testapp4_crt')
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/test-ssl.private.key", 'testapp4_key')
+      end
     end
   end
 

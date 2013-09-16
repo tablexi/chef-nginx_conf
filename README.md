@@ -80,6 +80,17 @@ Outputs to sites-available/mywebsite.com:
       root "/var/www/myapp";
     }
 
+###SSL
+
+To configure ssl:
+
+    nginx_conf_file "mywebsite.com" do
+      ssl({'public' => 'public_key', 'private' => 'private_key', 'name' => 'mywebsite'})
+    end
+
+*NOTE* The name attribute is optional.  It defaults to the resource conf_name or resource name. It is only necessary, if you want to define the public and private key file name.  EXE Using the value above, the file names would be mywebsite.public.crt & mywebsite.private.key respectively.
+
+
 ##Disable##
 
 Removes the symlink between sites-enabled and sites-available for the named configuration.

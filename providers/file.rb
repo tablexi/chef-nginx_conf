@@ -22,13 +22,14 @@ action :create do
   end
 
   if new_resource.ssl
+    ssl_name = new_resource.ssl['name'] || conf_name
     directory "#{node[:nginx][:dir]}/ssl" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0755'
     end
 
-    file "#{node[:nginx][:dir]}/ssl/#{conf_name}.public.crt" do
+    file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.public.crt" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
@@ -38,7 +39,7 @@ action :create do
 EOH
     end
 
-    file "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key" do
+    file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.private.key" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
       mode '0640'
@@ -49,8 +50,8 @@ EOH
     end
 
     ssl = {
-      :certificate => "#{node[:nginx][:dir]}/ssl/#{conf_name}.public.crt",
-      :certificate_key => "#{node[:nginx][:dir]}/ssl/#{conf_name}.private.key"
+      :certificate => "#{node[:nginx][:dir]}/ssl/#{ssl_name}.public.crt",
+      :certificate_key => "#{node[:nginx][:dir]}/ssl/#{ssl_name}.private.key"
     }
   end
 

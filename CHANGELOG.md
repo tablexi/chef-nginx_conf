@@ -39,3 +39,9 @@
 ## v0.2.2:
 
 * updated default recipe to actually mimic LWRP reources.
+
+## v0.2.3:
+
+* added ssl tests
+* added ssl docs
+* added ssl name attribute

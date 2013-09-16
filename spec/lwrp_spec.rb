@@ -1,11 +1,11 @@
 require_relative 'spec_helper'
 
 describe 'nginx_conf_file' do
-  before do
+  before(:all) do
     @chef_run = chef_run()
   end
   context 'create action' do
-    before do
+    before(:all) do
       @chef_run.converge 'fake::create'
     end
 
@@ -14,7 +14,6 @@ describe 'nginx_conf_file' do
     end
  
     it 'template should notify delayed execute test' do
-      pending 'notify delayed resource error'
       expect(@chef_run.template("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify 'execute[test-nginx-conf-testapp1-create]', :run
     end
 
@@ -24,7 +23,6 @@ describe 'nginx_conf_file' do
     end
 
     it 'link should notify delayed execute test' do
-      pending 'notify delayed resource error'
       expect(@chef_run.link("#{@chef_run.node[:nginx][:dir]}/sites-enabled/testapp1")).to notify 'execute[test-nginx-conf-testapp1-create]', :run
     end
 
@@ -34,7 +32,7 @@ describe 'nginx_conf_file' do
 
     it 'should restart nginx' do
       pending 'notify delayed resource error'
-    	expect(@chef_run.execute("#{@chef_run.node[:nginx][:binary]} -t")).to notify 'service[nginx]', :restart
+    	expect(@chef_run.execute("test-nginx-conf-testapp1-create")).to notify 'service[nginx]', :restart
     end
 
     describe 'ssl' do
@@ -53,7 +51,7 @@ describe 'nginx_conf_file' do
   end
 
   context 'delete action' do
-    before do
+    before(:all) do
       @chef_run.converge 'fake::delete'
     end
 
@@ -67,12 +65,12 @@ describe 'nginx_conf_file' do
 
     it 'should restart nginx' do
       pending 'notify delayed resource error'
-      expect(@chef_run.file("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify('service[nginx]', :restart)
+      expect(@chef_run.file("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify 'service[nginx]', :restart
     end
   end
 
   context 'enable action' do
-    before do
+    before(:all) do
       @chef_run.converge 'fake::enable'
     end
 
@@ -87,12 +85,12 @@ describe 'nginx_conf_file' do
 
     it 'should restart nginx' do
       pending 'notify delayed resource error'
-      expect(@chef_run.execute("#{node[:nginx][:binary]} -t")).to notify('service[nginx]', :restart)
+      expect(@chef_run.execute("#{node[:nginx][:binary]} -t")).to notify 'service[nginx]', :restart
     end
   end
 
   context 'disable action' do
-    before do
+    before(:all) do
       @chef_run.converge 'fake::disable'
     end
 

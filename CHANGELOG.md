@@ -45,3 +45,4 @@
 * added ssl tests
 * added ssl docs
 * added ssl name attribute
+* merged mwhooker to fix test resource name.

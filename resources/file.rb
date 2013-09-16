@@ -9,7 +9,7 @@ attribute :locations, :kind_of => [Hash, NilClass], :default => {} # Locations t
 attribute :name, :name_attribute => true, :kind_of => String
 attribute :options, :kind_of => [Hash, NilClass], :default => {} # Key value pairs of options to include in the Server body.
 attribute :upstream, :kind_of => [Hash, NilClass], :default => {} # Key value pair of upstream configuration to include outside Server body.
-attribute :reload, :kind_of => [Symbol], :equal_to => [:delayed, :immeditaely], :default => :delayed # How soon should we restart nginx.
+attribute :reload, :kind_of => [Symbol], :equal_to => [:delayed, :immediately], :default => :delayed # How soon should we restart nginx.
 attribute :root, :kind_of => [String, NilClass], :default => nil # Server root
 attribute :server_name, :kind_of => [String, Array, NilClass], :default => nil # Server name if different then the name attribute.
 attribute :conf_name, :kind_of => [String, NilClass], :default => nil # Configuration name.

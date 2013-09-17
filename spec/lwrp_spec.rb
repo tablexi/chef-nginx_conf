@@ -43,9 +43,19 @@ describe 'nginx_conf_file' do
         expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/testapp3.public.crt", 'crt')
         expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/testapp3.private.key", 'key')
       end
+      it 'should set ssl info in testapp3 conf' do
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp3", "ssl on;")
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp3", "ssl_certificate /etc/nginx/ssl/testapp3.public.crt;")
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp3", "ssl_certificate_key /etc/nginx/ssl/testapp3.private.key;")
+      end
       it 'should create testapp4 cert file with set name' do
         expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/test-ssl.public.crt", 'testapp4_crt')
         expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/test-ssl.private.key", 'testapp4_key')
+      end
+      it 'should set ssl info in testapp4 conf' do
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp4", "ssl on;")
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp4", "ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;")
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp4", "ssl_certificate_key /etc/nginx/ssl/test-ssl.private.key;")
       end
     end
   end

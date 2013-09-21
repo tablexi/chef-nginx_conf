@@ -57,6 +57,15 @@ describe 'nginx_conf_file' do
         expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp4", "ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;")
         expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp4", "ssl_certificate_key /etc/nginx/ssl/test-ssl.private.key;")
       end
+      it 'should create testapp5 cert file with set name' do
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/test-ssl.public.crt", 'testapp4_crt')
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/ssl/test-ssl.private.key", 'testapp4_key')
+      end
+      it 'should set ssl info in testapp5 conf' do
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp5", "ssl on;")
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp5", "ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;")
+        expect(@chef_run).to create_file_with_content("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp5", "ssl_certificate_key /etc/nginx/ssl/test-ssl.private.key;")
+      end
     end
   end
 

@@ -15,3 +15,7 @@ end
 nginx_conf_file 'testapp4' do
   ssl({'public' => 'testapp4_crt', 'private' => 'testapp4_key', 'name' => 'test-ssl'})
 end
+
+nginx_conf_file 'testapp5' do
+  ssl({'public' => 'testapp4_crt', 'private' => 'testapp4_key', 'name' => 'test-ssl'})
+end

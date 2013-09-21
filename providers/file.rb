@@ -22,7 +22,11 @@ action :create do
   end
 
   if new_resource.ssl
-    ssl_name = new_resource.ssl['name'] || conf_name
+    ssl_name = if new_resource.ssl['name']
+      new_resource.ssl['name']
+    else
+      conf_name
+    end
     directory "#{node[:nginx][:dir]}/ssl" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]

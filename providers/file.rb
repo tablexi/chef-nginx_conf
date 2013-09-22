@@ -27,6 +27,7 @@ action :create do
     else
       conf_name
     end
+
     directory "#{node[:nginx][:dir]}/ssl" do
       owner node[:nginx][:user] 
       group node[:nginx][:group]
@@ -106,6 +107,20 @@ action :delete do
   file "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do
     action :delete
     notifies :restart, 'service[nginx]', new_resource.reload
+  end
+
+  ssl_name = if new_resource.ssl && new_resource.ssl['name']
+    new_resource.ssl['name']
+  else
+    conf_name
+  end
+
+  file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.public.crt" do
+    action :delete
+  end
+
+  file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.private.key" do
+    action :delete
   end
 
   new_resource.updated_by_last_action(true)

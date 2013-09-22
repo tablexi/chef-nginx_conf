@@ -82,6 +82,11 @@ describe 'nginx_conf_file' do
       expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1"
     end
 
+    it 'should delete ssl file if present' do
+      expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.public.crt"
+      expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.private.key"
+    end
+
     it 'should restart nginx' do
       pending 'notify delayed resource error'
       expect(@chef_run.file("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify 'service[nginx]', :restart

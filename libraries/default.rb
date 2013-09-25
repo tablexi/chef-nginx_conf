@@ -44,9 +44,16 @@ CFG
 #{nginx_conf_options(value,level+1)}
 #{indent}}
 CFG
+    elsif type == 'limit_except'
+      output << <<-CFG
+
+#{indent}limit_except #{option} {
+#{nginx_conf_options(value,level+1)}
+#{indent}}
+CFG
     else
       if value.kind_of?(Hash)
-        if ['locations', 'if', 'upstream'].include? option
+        if ['locations', 'if', 'upstream','limit_except'].include? option
           output << nginx_conf_options(value, level, option)
         else
           value.each do |k,v|

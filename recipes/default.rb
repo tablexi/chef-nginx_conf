@@ -47,7 +47,7 @@ Array(node[:nginx_conf][:confs]).each do |site|
       listen conf['listen']
       locations conf['locations']
       options conf['options']
-      upstream conf['upstrea']
+      upstream conf['upstream']
       reload conf['reload']
       root conf['root']
       server_name conf['server_name']

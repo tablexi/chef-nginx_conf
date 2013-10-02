@@ -47,3 +47,7 @@
 * added ssl name attribute
 * merged mwhooker to fix test resource name.
 * added ssl cert/key delete.
+
+## v0.2.4:
+
+* added limit_except (Thanks namtzigla)

@@ -175,4 +175,45 @@ CFG
       expect(nginx_conf_options(options)).to eq output
     end
   end
+
+  describe 'limit_except' do
+    it 'should parse them out' do
+      options = {'limit_except' => {
+          'test' => {
+            'key' => 'value'
+          }
+        }
+      }
+      output = <<-CFG
+
+limit_except test {
+  key value;
+}
+CFG
+      expect(nginx_conf_options(options)).to eq output
+    end
+    it 'should parse nested as well' do
+      options = {'limit_except' => {
+          'test' => {
+            'limit_except' => {
+              'test again' => {
+                'key' => 'value'
+              }
+            }
+          }
+        }
+      }
+      output = <<-CFG
+
+limit_except test {
+
+  limit_except test again {
+    key value;
+  }
+
+}
+CFG
+      expect(nginx_conf_options(options)).to eq output
+    end
+  end
 end

@@ -9,12 +9,11 @@ def chef_run(opts = {})
   options = {
     :step_into => ['nginx_conf_file'],
     :environment => 'production',
-    :evaluate_guards => false,
     :cookbook_path => cookbook_paths,
     :log_level => :fatal
   }.merge(opts)
   
-  @chef_run = ChefSpec::ChefRunner.new(options) do |node|
+  @chef_run = ChefSpec::Runner.new(options) do |node|
     env = Chef::Environment.new
     env.name options[:environment]
 

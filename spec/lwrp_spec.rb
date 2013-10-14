@@ -70,26 +70,47 @@ describe 'nginx_conf_file' do
   end
 
   context 'delete action' do
-    before(:all) do
-      @chef_run.converge 'fake::delete'
+    context 'basic' do
+      before(:all) do
+        @chef_run.converge 'fake::delete'
+      end
+
+      it 'should remove link from sites-available to sites-enabled' do
+        expect(@chef_run).to delete_link "#{@chef_run.node[:nginx][:dir]}/sites-enabled/testapp1"
+      end
+
+      it 'should delete file from sites-available' do
+        expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1"
+      end
+
+      it 'should restart nginx' do
+        pending 'notify delayed resource error'
+        expect(@chef_run.file("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify 'service[nginx]', :restart
+      end
     end
 
-    it 'should remove link from sites-available to sites-enabled' do
-      expect(@chef_run).to delete_link "#{@chef_run.node[:nginx][:dir]}/sites-enabled/testapp1"
-    end
+    context 'ssl' do
+      it 'should delete ssl file if present' do
+        @chef_run.converge 'fake::delete'
+        expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.public.crt"
+        expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.private.key"
+      end
 
-    it 'should delete file from sites-available' do
-      expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1"
-    end
+      it 'should not delete if attribute set to false' do
+        @chef_run.node.set[:nginx_conf][:delete][:ssl] = false
+        @chef_run.converge 'fake::delete'
+        expect(@chef_run).not_to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.public.crt"
+        expect(@chef_run).not_to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.private.key"
+      end
 
-    it 'should delete ssl file if present' do
-      expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.public.crt"
-      expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.private.key"
-    end
-
-    it 'should restart nginx' do
-      pending 'notify delayed resource error'
-      expect(@chef_run.file("#{@chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify 'service[nginx]', :restart
+      it 'should not delete if provider resource attribute is set to false' do
+        @chef_run.node.set[:nginx_conf][:delete][:ssl] = true
+        @chef_run.converge 'fake::delete'
+        expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.public.crt"
+        expect(@chef_run).to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp1.private.key"
+        expect(@chef_run).not_to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp2.public.crt"
+        expect(@chef_run).not_to delete_file "#{@chef_run.node[:nginx][:dir]}/ssl/testapp2.private.key"
+      end
     end
   end
 

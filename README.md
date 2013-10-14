@@ -107,6 +107,15 @@ Removes the symlink and deletes the configuration:
       action :delete
     end
 
+###SSL Delete
+
+Deleting SSL certs is managed by the delete resource, but there are some situations where you want to manage the deletion yourself.  To do this, set the `[:nginx_conf][:defaults][:delete][:ssl]` to false or add :delete false to the nginx_conf_file ssl attribute hash.
+
+    nginx_conf_file "mywebsite.com" do
+      action :delete
+      ssl({'delete' => false})
+    end
+
 
 #Testing#
 

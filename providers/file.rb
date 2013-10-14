@@ -109,18 +109,22 @@ action :delete do
     notifies :restart, 'service[nginx]', new_resource.reload
   end
 
-  ssl_name = if new_resource.ssl && new_resource.ssl['name']
-    new_resource.ssl['name']
-  else
-    conf_name
-  end
+  if node[:nginx_conf][:delete][:ssl]
+    unless new_resource.ssl && !new_resource.ssl['delete']
+      ssl_name = if new_resource.ssl && new_resource.ssl['name']
+        new_resource.ssl['name']
+      else
+        conf_name
+      end
 
-  file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.public.crt" do
-    action :delete
-  end
+      file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.public.crt" do
+        action :delete
+      end
 
-  file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.private.key" do
-    action :delete
+      file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.private.key" do
+        action :delete
+      end
+    end
   end
 
   new_resource.updated_by_last_action(true)

@@ -13,3 +13,4 @@ default[:nginx_conf][:locations] = {
     'proxy_pass' => nil
   }
 }
+default[:nginx_conf][:delete][:ssl] = true

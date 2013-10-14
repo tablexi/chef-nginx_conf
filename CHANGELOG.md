@@ -51,3 +51,4 @@
 ## v0.2.4:
 
 * added limit_except (Thanks namtzigla)
+* fixed ssl delete cert issue with a new attribute

@@ -60,7 +60,7 @@ EOH
     }
   end
 
-  test_nginx = execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
+  test_nginx = execute "test-nginx-conf-#{conf_name}-create" do
     action :nothing
     command "#{node[:nginx][:binary]} -t"
     only_if { new_resource.auto_enable_site }
@@ -133,7 +133,7 @@ end
 action :enable do
   conf_name = new_resource.conf_name || new_resource.name
 
-  test_nginx = execute "test-nginx-conf-#{conf_name}-#{new_resource.action}" do
+  test_nginx = execute "test-nginx-conf-#{conf_name}-enable" do
     action :nothing
     command "#{node[:nginx][:binary]} -t"
     notifies :restart, 'service[nginx]', new_resource.reload

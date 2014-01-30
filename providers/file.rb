@@ -7,6 +7,7 @@ action :create do
   conf_name = new_resource.conf_name || new_resource.name
   site_type = new_resource.site_type
   socket = new_resource.socket
+  nginx_group = (node[:nginx][:group] == node[:nginx][:user]) ? 'root' : node[:nginx][:group]
   ssl = false
 
   if site_type == :dynamic
@@ -30,13 +31,13 @@ action :create do
 
     directory "#{node[:nginx][:dir]}/ssl" do
       owner node[:nginx][:user] 
-      group node[:nginx][:group]
+      group nginx_group
       mode '0755'
     end
 
     file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.public.crt" do
       owner node[:nginx][:user] 
-      group node[:nginx][:group]
+      group nginx_group
       mode '0640'
       content  <<-EOH
 # Managed by Chef.  Local changes will be overwritten.
@@ -46,7 +47,7 @@ EOH
 
     file "#{node[:nginx][:dir]}/ssl/#{ssl_name}.private.key" do
       owner node[:nginx][:user] 
-      group node[:nginx][:group]
+      group nginx_group
       mode '0640'
       content <<-EOH
 # Maintained by Chef.  Local changes will be overwritten.
@@ -69,7 +70,7 @@ EOH
 
   template "#{node[:nginx][:dir]}/sites-available/#{conf_name}" do
     owner node[:nginx][:user] 
-    group node[:nginx][:group]
+    group nginx_group
     mode '755'
     source(new_resource.template || 'conf.erb')
     cookbook new_resource.template ? new_resource.cookbook_name.to_s : 'nginx_conf'

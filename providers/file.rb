@@ -73,7 +73,7 @@ EOH
     group nginx_group
     mode '755'
     source(new_resource.template || 'conf.erb')
-    cookbook new_resource.template ? new_resource.cookbook_name.to_s : 'nginx_conf'
+    cookbook new_resource.template ? new_resource.cookbook.to_s : 'nginx_conf'
     variables(
       :block =>  new_resource.block,
       :options =>  options,

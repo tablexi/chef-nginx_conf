@@ -18,8 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-Array(node[:nginx_conf][:confs]).each do |site|
-  site.each do |name,options|
+node[:nginx_conf][:confs].each do |name,options|
     conf = {
       'action' => :create,
       'block' => nil,
@@ -58,6 +57,5 @@ Array(node[:nginx_conf][:confs]).each do |site|
       ssl conf['ssl']
       precedence conf['precedence']
       site_type conf['site_type'].to_sym
-    end
   end
 end

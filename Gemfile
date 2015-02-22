@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'chef',       ENV['CHEF_VERSION'] || '~> 11.0.0'
+gem 'chef',       ENV['CHEF_VERSION'] || '~> 11.14.0'
 
 group :test do
   gem 'chefspec',
@@ -11,5 +11,5 @@ group :test do
   gem 'gherkin',
     '<= 2.11.6'
   gem 'berkshelf',
-    '~> 1.0'
+    '~> 3.0'
 end

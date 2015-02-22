@@ -4,7 +4,7 @@ gem 'chef',       ENV['CHEF_VERSION'] || '~> 11.14.0'
 
 group :test do
   gem 'chefspec',
-    :git => "git://github.com/acrmp/chefspec.git"
+    :git => "git://github.com/sethvargo/chefspec.git"
   gem 'strainer',
     '>= 2.0.0'
   gem 'foodcritic'

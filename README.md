@@ -24,7 +24,7 @@ Add the `nginx_conf` recipe to your runlist.
 
 Rather then accessing the LWRP directly, add a site hash to the `confs` attribute list.
 
-    node['nginx_conf']['confs'] = [{
+    node['nginx_conf']['confs'] = {
       'test1.mywebsite.com' => {
         'socket' => "/var/www/myapp/shared/tmp/sockets/unicorn.socket"
       },
@@ -38,7 +38,7 @@ Rather then accessing the LWRP directly, add a site hash to the `confs` attribut
       'test4.mywebsite.com' => {
         'action' => :delete
       },
-    }]
+    }
 
 ##Create##
 

@@ -14,7 +14,7 @@ describe 'nginx_conf::libraries::nginx_conf_options' do
 	  	  }
 	  	}
 	  	output = 'test key value;'
-	  	expect(output).to eq nginx_conf_options(options) 
+	  	expect(output).to eq nginx_conf_options(options)
 	  end
 	  it 'check hash' do
 	  	options = {
@@ -24,7 +24,7 @@ describe 'nginx_conf::libraries::nginx_conf_options' do
 	  	  }
 	  	}
 	  	output = ['test key value;', 'test key1 value1;'].join("\n")
-	  	expect(output).to eq nginx_conf_options(options) 
+	  	expect(output).to eq nginx_conf_options(options)
 	  end
 	  it 'check array' do
 	  	options = {
@@ -34,14 +34,14 @@ describe 'nginx_conf::libraries::nginx_conf_options' do
 	  	  ]
 	  	}
 	  	output = ['test 1;', 'test 2;'].join("\n")
-	  	expect(output).to eq nginx_conf_options(options) 
+	  	expect(output).to eq nginx_conf_options(options)
 	  end
 	  it 'check string' do
 	  	options = {
 	  	  'test' => '1'
 	  	}
 	  	output = 'test 1;'
-	  	expect(output).to eq nginx_conf_options(options) 
+	  	expect(output).to eq nginx_conf_options(options)
 	  end
 	  it 'check block string' do
 	  	expect(nginx_conf_options({'block' => 'value'})).to eq 'value;'

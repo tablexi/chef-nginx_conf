@@ -1,9 +1,7 @@
 require_relative 'spec_helper'
 
 describe 'nginx_conf::default' do
-  before do
-    @chef_run = chef_run()
-  end
+  let(:chef_run) { ChefSpec::SoloRunner.new() }
 
   describe 'attributes' do
   	before do
@@ -39,8 +37,8 @@ describe 'nginx_conf::default' do
   	  	},
   	  	'testapp3' => {
   	  	}
-  	  }	
-      @chef_run.converge 'nginx_conf::default'
+  	  }
+      chef_run.converge 'nginx_conf::default'
   	end
   	context 'block' do
 

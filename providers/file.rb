@@ -31,24 +31,28 @@ action :create do
       mode '0755'
     end
 
-    file "#{node['nginx']['dir']}/ssl/#{ssl_name}.public.crt" do
+    template "#{ssl_name}_public_crt" do
+      path "#{node['nginx']['dir']}/ssl/#{ssl_name}.public.crt"
+      source 'ssl.erb'
+      cookbook 'nginx_conf'
       owner node['nginx']['user']
       group nginx_group
       mode '0640'
-      content <<-EOH
-# Managed by Chef.  Local changes will be overwritten.
-#{new_resource.ssl['public']}
-EOH
+      variables(
+        :ssl_key => new_resource.ssl['public']
+      )
     end
 
-    file "#{node['nginx']['dir']}/ssl/#{ssl_name}.private.key" do
+    template "#{ssl_name}_private_key" do
+      path "#{node['nginx']['dir']}/ssl/#{ssl_name}.private.key"
+      source 'ssl.erb'
+      cookbook 'nginx_conf'
       owner node['nginx']['user']
       group nginx_group
       mode '0640'
-      content <<-EOH
-# Maintained by Chef.  Local changes will be overwritten.
-#{new_resource.ssl['private']}
-EOH
+      variables(
+        :ssl_key => new_resource.ssl['private']
+      )
     end
 
     ssl = {

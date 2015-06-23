@@ -10,6 +10,13 @@ action :create do
   nginx_group = (node['nginx']['group'] == node['nginx']['user']) ? 'root' : node['nginx']['group']
   ssl = false
 
+  test_nginx = execute "test-nginx-conf-#{conf_name}-create" do
+    action :nothing
+    command "#{node['nginx']['binary']} -t"
+    only_if { new_resource.auto_enable_site }
+    notifies :restart, 'service[nginx]', new_resource.reload
+  end
+
   if site_type == :dynamic
     locations.each do |name, _location|
       if options['try_files']
@@ -41,6 +48,7 @@ action :create do
       variables(
         :ssl_key => new_resource.ssl['public']
       )
+      notifies :run, test_nginx, new_resource.reload
     end
 
     template "#{ssl_name}_private_key" do
@@ -53,19 +61,13 @@ action :create do
       variables(
         :ssl_key => new_resource.ssl['private']
       )
+      notifies :run, test_nginx, new_resource.reload
     end
 
     ssl = {
       :certificate => "#{node['nginx']['dir']}/ssl/#{ssl_name}.public.crt",
       :certificate_key => "#{node['nginx']['dir']}/ssl/#{ssl_name}.private.key"
     }
-  end
-
-  test_nginx = execute "test-nginx-conf-#{conf_name}-create" do
-    action :nothing
-    command "#{node['nginx']['binary']} -t"
-    only_if { new_resource.auto_enable_site }
-    notifies :restart, 'service[nginx]', new_resource.reload
   end
 
   template "#{node['nginx']['dir']}/sites-available/#{conf_name}" do

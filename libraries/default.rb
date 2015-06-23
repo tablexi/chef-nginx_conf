@@ -19,59 +19,71 @@
 #
 
 # Helper function for displaying configuration options.
-def nginx_conf_options(options, level=0, type=false)
-  indent = '  ' * level
+def nginx_conf_options(options, level = 0, type = false)
   output = []
-  options.each do |option,value|
-    if type == 'locations'
-      output << <<-CFG
-
-#{indent}location #{option} {
-#{nginx_conf_options(value,level+1)}
-#{indent}}
-CFG
-    elsif type == 'if'
-      output << <<-CFG
-
-#{indent}if (#{option}) {
-#{nginx_conf_options(value,level+1)}
-#{indent}}
-CFG
-    elsif type == 'upstream'
-      output << <<-CFG
-
-#{indent}upstream #{option} {
-#{nginx_conf_options(value,level+1)}
-#{indent}}
-CFG
-    elsif type == 'limit_except'
-      output << <<-CFG
-
-#{indent}limit_except #{option} {
-#{nginx_conf_options(value,level+1)}
-#{indent}}
-CFG
+  options.each do |option, value|
+    if type
+      output << _nginx_conf_type(type, option, value, level)
+    elsif value.is_a?(Hash)
+      output << _nginx_conf_hash(option, value, level)
+    elsif value.is_a?(Array)
+      output << _nginx_conf_array(option, value, level)
     else
-      if value.kind_of?(Hash)
-        if ['locations', 'if', 'upstream','limit_except'].include? option
-          output << nginx_conf_options(value, level, option)
-        else
-          value.each do |k,v|
-            output << "#{indent}#{option} #{k} #{v};"
-          end
-        end
-      elsif value.kind_of?(Array)
-        value.each do |v|
-          output << nginx_conf_options({option => v}, level)
-        end
-      else
-        if option == 'block'
-          output << "#{indent}#{value};"
-        else
-          output << "#{indent}#{option} #{value};"
-        end
-      end
+      output << _nginx_conf_string(option, value, level)
     end
   end
   output.join("\n")
+end
+
+def _nginx_conf_array(option, value, level)
+  output = []
+  value.each do |v|
+    output << nginx_conf_options({ option => v }, level)
+  end
+  output
+end
+
+def _nginx_conf_hash(option, value, level)
+  indent = '  ' * level
+  output = []
+  if ['locations', 'if', 'upstream', 'limit_except'].include? option
+    output << nginx_conf_options(value, level, option)
+  else
+    value.each do |k, v|
+      output << "#{indent}#{option} #{k} #{v};"
+    end
+  end
+  output
+end
+
+def _nginx_conf_string(option, value, level)
+  indent = '  ' * level
+  output = []
+  if option == 'block'
+    output << "#{indent}#{value};"
+  else
+    output << "#{indent}#{option} #{value};"
+  end
+  output
+end
+
+def _nginx_conf_type(type, option, value, level)
+  indent = '  ' * level
+  <<-CFG
+
+#{_nginx_conf_types(type, indent, option)}
+#{nginx_conf_options(value, level + 1)}
+#{indent}}
+CFG
+end
+
+def _nginx_conf_types(type, indent, option)
+  case type
+  when 'locations'
+    "#{indent}location #{option} {"
+  when 'if'
+    "#{indent}if (#{option}) {"
+  else
+    "#{indent}#{type} #{option} {"
+  end
 end

@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 describe 'nginx_conf_file' do
-  let(:chef_run) { ChefSpec::SoloRunner.new( step_into: 'nginx_conf_file') }
+  let(:chef_run) { ChefSpec::SoloRunner.new(step_into: 'nginx_conf_file') }
 
   context 'create action' do
     before do
@@ -18,7 +18,7 @@ describe 'nginx_conf_file' do
 
     it 'to link sites-available to sites-enabled' do
       expect(chef_run).to create_link("#{chef_run.node[:nginx][:dir]}/sites-enabled/testapp1")
-    	expect(chef_run.link("#{chef_run.node[:nginx][:dir]}/sites-enabled/testapp1")).to link_to("#{chef_run.node[:nginx][:dir]}/sites-available/testapp1")
+      expect(chef_run.link("#{chef_run.node[:nginx][:dir]}/sites-enabled/testapp1")).to link_to("#{chef_run.node[:nginx][:dir]}/sites-available/testapp1")
     end
 
     it 'link to notify delayed execute test' do
@@ -26,7 +26,7 @@ describe 'nginx_conf_file' do
     end
 
     it 'to restart nginx' do
-    	expect(chef_run.execute("#{chef_run.node[:nginx][:binary]} -t")).to notify('service[nginx]').to(:restart).delayed
+      expect(chef_run.execute("#{chef_run.node[:nginx][:binary]} -t")).to notify('service[nginx]').to(:restart).delayed
     end
 
     describe 'ssl' do
@@ -38,27 +38,27 @@ describe 'nginx_conf_file' do
         expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/ssl/testapp3.private.key").with_content('key')
       end
       it 'to set ssl info in testapp3 conf' do
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp3").with_content("ssl on;")
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp3").with_content("ssl_certificate /etc/nginx/ssl/testapp3.public.crt;")
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp3").with_content("ssl_certificate_key /etc/nginx/ssl/testapp3.private.key;")
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp3").with_content('ssl on;')
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp3").with_content('ssl_certificate /etc/nginx/ssl/testapp3.public.crt;')
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp3").with_content('ssl_certificate_key /etc/nginx/ssl/testapp3.private.key;')
       end
       it 'to create testapp4 cert file with set name' do
         expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/ssl/test-ssl.public.crt").with_content('testapp4_crt')
         expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/ssl/test-ssl.private.key").with_content('testapp4_key')
       end
       it 'to set ssl info in testapp4 conf' do
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp4").with_content("ssl on;")
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp4").with_content("ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;")
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp4").with_content("ssl_certificate_key /etc/nginx/ssl/test-ssl.private.key;")
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp4").with_content('ssl on;')
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp4").with_content('ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;')
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp4").with_content('ssl_certificate_key /etc/nginx/ssl/test-ssl.private.key;')
       end
       it 'to create testapp5 cert file with set name' do
         expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/ssl/test-ssl.public.crt").with_content('testapp4_crt')
         expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/ssl/test-ssl.private.key").with_content('testapp4_key')
       end
       it 'to set ssl info in testapp5 conf' do
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp5").with_content("ssl on;")
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp5").with_content("ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;")
-        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp5").with_content("ssl_certificate_key /etc/nginx/ssl/test-ssl.private.key;")
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp5").with_content('ssl on;')
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp5").with_content('ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;')
+        expect(chef_run).to render_file("#{chef_run.node[:nginx][:dir]}/sites-available/testapp5").with_content('ssl_certificate /etc/nginx/ssl/test-ssl.public.crt;')
       end
     end
   end
@@ -139,5 +139,4 @@ describe 'nginx_conf_file' do
       expect(chef_run.link("#{chef_run.node[:nginx][:dir]}/sites-enabled/testapp1")).to notify('service[nginx]').to(:restart).delayed
     end
   end
-
 end

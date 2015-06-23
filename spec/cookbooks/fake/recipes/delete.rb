@@ -6,5 +6,5 @@ end
 
 nginx_conf_file 'testapp2' do
   action :delete
-  ssl({'delete' => false})
+  ssl('delete' => false)
 end

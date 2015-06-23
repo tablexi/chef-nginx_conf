@@ -1,0 +1,32 @@
+AllCops:
+  Include:
+    - Berksfile
+    - Gemfile
+    - Rakefile
+    - Guardfile
+  Exclude:
+    - vendor/**
+
+ClassLength:
+  Enabled: false
+Documentation:
+  Enabled: false
+Encoding:
+  Enabled: false
+HashSyntax:
+  Enabled: false
+LineLength:
+  Enabled: false
+MethodLength:
+  Enabled: false
+SignalException:
+  Enabled: false
+TrailingComma:
+  Enabled: false
+WordArray:
+  Enabled: false
+Style/Next:
+  Enabled: false
+# Remove after refactoring into library resources.
+BlockNesting:
+  Enabled: false

@@ -27,6 +27,3 @@ WordArray:
   Enabled: false
 Style/Next:
   Enabled: false
-# Remove after refactoring into library resources.
-BlockNesting:
-  Enabled: false

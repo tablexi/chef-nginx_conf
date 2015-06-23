@@ -1,6 +1,9 @@
 rvm:
-  - 1.9.3
-env:
-  - CHEF_VERSION='~> 11.0'
-before_script: bundle exec berks install
-script: bundle exec strainer test
+  - 2.0.0
+  - 2.1
+  - 2.2
+
+script:
+  - bundle exec rubocop
+  - bundle exec foodcritic .
+  - bundle exec rspec

@@ -77,14 +77,14 @@ action :create do
     source(new_resource.template || 'conf.erb')
     cookbook new_resource.template ? new_resource.cookbook.to_s : 'nginx_conf'
     variables(
-      :block =>  new_resource.block,
-      :options =>  options,
+      :block => new_resource.block,
+      :options => options,
       :upstream => upstream,
       :listen => listen,
-      :locations =>  locations,
-      :root =>  new_resource.root,
+      :locations => locations,
+      :root => new_resource.root,
       :server_name => server_name,
-      :type =>  site_type,
+      :type => site_type,
       :ssl => ssl
     )
     notifies :run, test_nginx, new_resource.reload

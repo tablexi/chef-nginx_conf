@@ -4,7 +4,7 @@ default_action :create
 
 attribute :block, :kind_of => [String, Array, NilClass], :default => nil # Include additional code
 attribute :cookbook, :kind_of => [String, NilClass], :default => nil # Cookbook to find template
-attribute :listen, :kind_of => [String, Array, NilClass], :default => nil  # Listening port, ip, etc.
+attribute :listen, :kind_of => [String, Array, NilClass], :default => nil # Listening port, ip, etc.
 attribute :locations, :kind_of => [Hash, NilClass], :default => {} # Locations to include.
 attribute :name, :name_attribute => true, :kind_of => String
 attribute :options, :kind_of => [Hash, NilClass], :default => {} # Key value pairs of options to include in the Server body.

@@ -1,6 +1,6 @@
 name 'nginx_conf'
-maintainer 'Firebelly Design'
-maintainer_email 'lloyd@firebellydesign.com'
+maintainer 'Table XI'
+maintainer_email 'sysadmins@tablexi.com'
 license 'GNU Public License 3.0'
 description 'Installs/Configures nginx_conf'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))

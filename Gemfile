@@ -2,12 +2,13 @@ source 'http://rubygems.org'
 
 ruby '2.2.2'
 
-gem 'berkshelf', '~> 3'
+gem 'berkshelf'
 
 group :dev do
   gem 'foodcritic'
   gem 'chefspec'
   gem 'rubocop'
+  gem 'stove'
 end
 
 group :kitchen do

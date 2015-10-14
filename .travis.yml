@@ -1,7 +1,0 @@
-rvm:
-  - 2.2.2
-
-script:
-  - bundle exec rubocop
-  - bundle exec foodcritic .
-  - bundle exec rspec

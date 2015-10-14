@@ -1,0 +1,10 @@
+database:
+  override:
+    - echo "No database necessary."
+
+test:
+  override:
+    - bundle exec berks install
+    - bundle exec rubocop
+    - bundle exec foodcritic .
+    - bundle exec rspec

@@ -4,9 +4,11 @@
 Manage nginx server configuration files.
 
 
+
+
 #Requirements#
  * Chef >= 11.0
- * Nginx cookbook
+ * Nginx cookbook - As of version 2.0.0, we no longer require the nginx cookbook explicitly. You can use whatever means to install nginx. The only requirement is a Chef service resource called nginx be made available to this cookbook.
 
 
 #Attributes#
@@ -49,7 +51,7 @@ Creates a nginx configuration in the sites-available directory, tests it, symlin
     end
 
 Outputs to sites-available/mywebsite.com:
-  
+
     server {
       listen 80;
 
@@ -64,14 +66,14 @@ Outputs to sites-available/mywebsite.com:
     }
 
 Creating a static conf is even easier.
-  
+
     nginx_conf_file "mywebsite.com" do
       root "/var/www/myapp"
       site_type :static
     end
 
 Outputs to sites-available/mywebsite.com:
-    
+
     server {
       listen 80;
 

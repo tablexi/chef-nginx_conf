@@ -1,0 +1,29 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: ruby:2.4.2
+    steps:
+      - checkout
+
+      - type: cache-restore
+        key: gemfile-v2{{ checksum "Gemfile.lock" }}
+
+      - run: bundle install --path ~/bundle
+
+      - type: cache-save
+        key: gemfile-v2{{ checksum "Gemfile.lock" }}
+        paths:
+          - ~/bundle
+
+      - run: bundle exec rake berkshelf:setup
+
+      - run: bundle exec berks install
+
+      - run: bundle exec rubocop
+
+      - run: bundle exec foodcritic .
+
+      - run:
+          command: bundle exec rspec
+          no_output_timeout: 1800

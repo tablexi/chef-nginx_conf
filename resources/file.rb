@@ -19,8 +19,3 @@ attribute :auto_enable_site, :kind_of => [TrueClass, FalseClass], :default => tr
 attribute :ssl, :kind_of => [Hash, NilClass], :default => nil # Allow the creation of ssl cert files.
 attribute :precedence, :default => :default # Level of attribute precedence to use
 attribute :site_type, :equal_to => [:dynamic, :static, 'dynamic', 'static'], :default => :dynamic
-
-def initialize(*args)
-  super
-  @action = :create
-end

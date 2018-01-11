@@ -1,3 +1,5 @@
+use_inline_resources
+
 action :create do
   listen = Array(new_resource.listen || node['nginx_conf']['listen'])
   locations = JSON.parse(node.send(new_resource.precedence)['nginx_conf']['locations'].to_hash.merge(new_resource.locations).to_json)
@@ -95,8 +97,6 @@ action :create do
     only_if { new_resource.auto_enable_site }
     notifies :run, test_nginx, new_resource.reload
   end
-
-  new_resource.updated_by_last_action(true)
 end
 
 action :delete do
@@ -130,8 +130,6 @@ action :delete do
       end
     end
   end
-
-  new_resource.updated_by_last_action(true)
 end
 
 action :enable do
@@ -147,8 +145,6 @@ action :enable do
     to "#{node['nginx']['dir']}/sites-available/#{conf_name}"
     notifies :run, test_nginx, new_resource.reload
   end
-
-  new_resource.updated_by_last_action(true)
 end
 
 action :disable do
@@ -159,6 +155,4 @@ action :disable do
     action :delete
     notifies :restart, 'service[nginx]', new_resource.reload
   end
-
-  new_resource.updated_by_last_action(true)
 end

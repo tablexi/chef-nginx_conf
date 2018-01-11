@@ -62,11 +62,11 @@ describe 'nginx_conf::libraries::nginx_conf_options' do
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-location test {
-  key value;
-}
+        location test {
+          key value;
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end
@@ -82,15 +82,15 @@ CFG
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-location test {
+        location test {
 
-  location test again {
-    key value;
-  }
+          location test again {
+            key value;
+          }
 
-}
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end
@@ -105,11 +105,11 @@ CFG
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-if (test) {
-  key value;
-}
+        if (test) {
+          key value;
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end
@@ -125,15 +125,15 @@ CFG
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-if (test) {
+        if (test) {
 
-  if (test again) {
-    key value;
-  }
+          if (test again) {
+            key value;
+          }
 
-}
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end
@@ -148,11 +148,11 @@ CFG
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-upstream test {
-  key value;
-}
+        upstream test {
+          key value;
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end
@@ -168,15 +168,15 @@ CFG
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-upstream test {
+        upstream test {
 
-  upstream test again {
-    key value;
-  }
+          upstream test again {
+            key value;
+          }
 
-}
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end
@@ -191,11 +191,11 @@ CFG
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-limit_except test {
-  key value;
-}
+        limit_except test {
+          key value;
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end
@@ -211,15 +211,15 @@ CFG
           }
         }
       }
-      output = <<-CFG
+      output = <<~CFG
 
-limit_except test {
+        limit_except test {
 
-  limit_except test again {
-    key value;
-  }
+          limit_except test again {
+            key value;
+          }
 
-}
+        }
 CFG
       expect(nginx_conf_options(options)).to eq output
     end

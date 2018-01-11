@@ -33,7 +33,7 @@ describe 'nginx_conf::default' do
           'server_name' => [
             'http://testapp2.server_name',
             'http://testapp2.server_name'
-          ],
+          ]
         },
         'testapp3' => {
         }

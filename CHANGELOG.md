@@ -1,6 +1,8 @@
 # Change Log
 
-## [2.0.0](https://github.com/tablexi/chef-nginx_conf/tree/2.0.0) (2016-09-23)
+For all future changes, see https://github.com/tablexi/chef-nginx_conf/releases.
+
+## [v2.0.0](https://github.com/tablexi/chef-nginx_conf/tree/2.0.0) (2016-09-23)
 [Full Changelog](https://github.com/tablexi/chef-nginx_conf/compare/v1.0.1...2.0.0)
 
 **Implemented enhancements:**

@@ -13,9 +13,10 @@ bin/*
 .bundle/*
 .cache
 .rvmrc
-.ruby-version
 .ruby-gemset
 .kitchen
 
 .kitchen/
 .kitchen.local.yml
+
+VERSION

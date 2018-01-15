@@ -5,7 +5,9 @@ AllCops:
     - Rakefile
     - Guardfile
   Exclude:
-    - vendor/**
+    - vendor/**/*
+    - cookbooks/**/*
+  TargetRubyVersion: 2.3
 
 ClassLength:
   Enabled: false
@@ -19,11 +21,20 @@ LineLength:
   Enabled: false
 MethodLength:
   Enabled: false
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
 SignalException:
-  Enabled: false
-TrailingComma:
   Enabled: false
 WordArray:
   Enabled: false
-Style/Next:
+Style/FrozenStringLiteralComment:
+  Enabled: false
+# Use until migration to classes
+Metrics/BlockLength:
+  Enabled: false
+Metrics/BlockNesting:
   Enabled: false

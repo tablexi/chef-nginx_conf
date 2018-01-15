@@ -1,0 +1,66 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: ruby:2.4.3
+    steps:
+      - checkout
+
+      - type: cache-restore
+        key: gemfile-v2{{ checksum "Gemfile.lock" }}
+
+      - run: bundle install --path ~/bundle
+
+      - type: cache-save
+        key: gemfile-v2{{ checksum "Gemfile.lock" }}
+        paths:
+          - ~/bundle
+
+      - run: bundle exec rake berkshelf:setup
+
+      - run: bundle exec berks install
+
+      - run: bundle exec rubocop
+
+      - run: bundle exec foodcritic .
+
+      - run:
+          command: bundle exec rspec
+          no_output_timeout: 1800
+  release:
+    docker:
+      - image: ruby:2.4.3
+    steps:
+      - checkout
+
+      - type: cache-restore
+        key: gemfile-v2{{ checksum "Gemfile.lock" }}
+
+      - run: bundle install --path ~/bundle
+
+      - type: cache-save
+        key: gemfile-v2{{ checksum "Gemfile.lock" }}
+        paths:
+          - ~/bundle
+
+      - run:
+          command: |
+            export GITHUB_REPO="$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+            export GITHUB_TOKEN=$CHANGELOG_GITHUB_TOKEN
+            export VERSION_MINOR=0
+            export VERSION_PATCH=$CIRCLE_BUILD_NUM
+            bundle exec rake release:github release:chef_server
+
+workflows:
+  version: 2
+  test_and_bump:
+    jobs:
+      - build
+      - release:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - develop

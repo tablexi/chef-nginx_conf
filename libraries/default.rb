@@ -22,15 +22,15 @@
 def nginx_conf_options(options, level = 0, type = false)
   output = []
   options.each do |option, value|
-    if type
-      output << _nginx_conf_type(type, option, value, level)
-    elsif value.is_a?(Hash)
-      output << _nginx_conf_hash(option, value, level)
-    elsif value.is_a?(Array)
-      output << _nginx_conf_array(option, value, level)
-    else
-      output << _nginx_conf_string(option, value, level)
-    end
+    output << if type
+                _nginx_conf_type(type, option, value, level)
+              elsif value.is_a?(Hash)
+                _nginx_conf_hash(option, value, level)
+              elsif value.is_a?(Array)
+                _nginx_conf_array(option, value, level)
+              else
+                _nginx_conf_string(option, value, level)
+              end
   end
   output.join("\n")
 end
@@ -59,21 +59,21 @@ end
 def _nginx_conf_string(option, value, level)
   indent = '  ' * level
   output = []
-  if option == 'block'
-    output << "#{indent}#{value};"
-  else
-    output << "#{indent}#{option} #{value};"
-  end
+  output << if option == 'block'
+              "#{indent}#{value};"
+            else
+              "#{indent}#{option} #{value};"
+            end
   output
 end
 
 def _nginx_conf_type(type, option, value, level)
   indent = '  ' * level
-  <<-CFG
+  <<~CFG
 
-#{_nginx_conf_types(type, indent, option)}
-#{nginx_conf_options(value, level + 1)}
-#{indent}}
+    #{_nginx_conf_types(type, indent, option)}
+    #{nginx_conf_options(value, level + 1)}
+    #{indent}}
 CFG
 end
 

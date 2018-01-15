@@ -1,3 +1,5 @@
+use_inline_resources
+
 action :create do
   listen = Array(new_resource.listen || node['nginx_conf']['listen'])
   locations = JSON.parse(node.send(new_resource.precedence)['nginx_conf']['locations'].to_hash.merge(new_resource.locations).to_json)
@@ -7,7 +9,7 @@ action :create do
   conf_name = new_resource.conf_name || new_resource.name
   site_type = new_resource.site_type
   socket = new_resource.socket
-  nginx_group = (node['nginx']['group'] == node['nginx']['user']) ? 'root' : node['nginx']['group']
+  nginx_group = node['nginx']['group'] == node['nginx']['user'] ? 'root' : node['nginx']['group']
   ssl = false
 
   test_nginx = execute "test-nginx-conf-#{conf_name}-create" do
@@ -18,9 +20,9 @@ action :create do
   end
 
   if site_type == :dynamic
-    locations.each do |name, _location|
+    locations.each_key do |name|
       if options['try_files']
-        options['try_files'] << " #{name}" if name.index('@') == 0
+        options['try_files'] << " #{name}" if name.index('@').zero?
       end
     end
 
@@ -30,7 +32,7 @@ action :create do
   end
 
   if new_resource.ssl
-    ssl_name = (new_resource.ssl['name']) ? new_resource.ssl['name'] : conf_name
+    ssl_name = new_resource.ssl['name'] ? new_resource.ssl['name'] : conf_name
 
     directory "#{node['nginx']['dir']}/ssl" do
       owner node['nginx']['user']
@@ -95,8 +97,6 @@ action :create do
     only_if { new_resource.auto_enable_site }
     notifies :run, test_nginx, new_resource.reload
   end
-
-  new_resource.updated_by_last_action(true)
 end
 
 action :delete do
@@ -115,11 +115,11 @@ action :delete do
   if node['nginx_conf']['delete']['ssl']
     unless new_resource.ssl && !new_resource.ssl['delete']
       ssl_name =
-      if new_resource.ssl && new_resource.ssl['name']
-        new_resource.ssl['name']
-      else
-        conf_name
-      end
+        if new_resource.ssl && new_resource.ssl['name']
+          new_resource.ssl['name']
+        else
+          conf_name
+        end
 
       file "#{node['nginx']['dir']}/ssl/#{ssl_name}.public.crt" do
         action :delete
@@ -130,8 +130,6 @@ action :delete do
       end
     end
   end
-
-  new_resource.updated_by_last_action(true)
 end
 
 action :enable do
@@ -147,8 +145,6 @@ action :enable do
     to "#{node['nginx']['dir']}/sites-available/#{conf_name}"
     notifies :run, test_nginx, new_resource.reload
   end
-
-  new_resource.updated_by_last_action(true)
 end
 
 action :disable do
@@ -159,6 +155,4 @@ action :disable do
     action :delete
     notifies :restart, 'service[nginx]', new_resource.reload
   end
-
-  new_resource.updated_by_last_action(true)
 end

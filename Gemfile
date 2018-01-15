@@ -1,27 +1,30 @@
 source 'http://rubygems.org'
 
-ruby '2.2.2'
+ruby File.open(File.expand_path('.ruby-version', File.dirname(__FILE__))) { |f| f.read.chomp }
 
 gem 'berkshelf'
+gem 'chef', '~> 12'
+gem 'cookbook_release', git: 'git@github.com:tablexi/chef-cookbook_release_tasks.git'
 
 group :dev do
-  gem 'foodcritic'
+  gem 'chef-validation'
   gem 'chefspec'
+  gem 'foodcritic'
   gem 'rubocop'
-  gem 'stove'
-end
-
-group :kitchen do
-  gem 'test-kitchen'
-  gem 'chef-zero'
-  gem 'kitchen-vagrant'
 end
 
 group :guard do
   gem 'guard'
-  gem 'guard-rspec'
   gem 'guard-foodcritic'
-  gem 'guard-rubocop'
   gem 'guard-kitchen'
+  gem 'guard-rspec'
+  gem 'guard-rubocop'
   gem 'ruby_gntp'
+end
+
+group :kitchen do
+  gem 'chef-zero'
+  gem 'kitchen-docker'
+  gem 'kitchen-ec2'
+  gem 'test-kitchen'
 end

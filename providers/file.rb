@@ -22,7 +22,7 @@ action :create do
   if site_type == :dynamic
     locations.each_key do |name|
       if options['try_files']
-        options['try_files'] << " #{name}" if name.index('@').zero?
+        options['try_files'] << " #{name}" if name.index('@')&.zero?
       end
     end
 

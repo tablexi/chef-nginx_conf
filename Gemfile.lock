@@ -216,7 +216,7 @@ GEM
     mixlib-cli (1.7.0)
     mixlib-config (2.2.6)
       tomlrb
-    mixlib-install (3.9.0)
+    mixlib-install (3.9.3)
       mixlib-shellout
       mixlib-versioning
       thor
@@ -328,7 +328,6 @@ GEM
     rubyntlm (0.6.2)
     rubyzip (1.2.1)
     rufus-lru (1.1.0)
-    safe_yaml (1.0.4)
     sawyer (0.8.1)
       addressable (>= 2.3.5, < 2.6)
       faraday (~> 0.8, < 1.0)
@@ -353,13 +352,12 @@ GEM
       logify (~> 0.2)
     syslog-logger (1.6.8)
     systemu (2.6.5)
-    test-kitchen (1.19.2)
+    test-kitchen (1.20.0)
       mixlib-install (~> 3.6)
       mixlib-shellout (>= 1.2, < 3.0)
       net-scp (~> 1.1)
       net-ssh (>= 2.9, < 5.0)
       net-ssh-gateway (~> 1.2)
-      safe_yaml (~> 1.0)
       thor (~> 0.19, < 0.19.2)
       winrm (~> 2.0)
       winrm-elevated (~> 1.0)

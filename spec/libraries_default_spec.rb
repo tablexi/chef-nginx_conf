@@ -1,4 +1,4 @@
-lib = File.expand_path('../../libraries', __FILE__)
+lib = File.expand_path('../libraries', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'default'
 

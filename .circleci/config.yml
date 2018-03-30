@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: ruby:2.4.3
+      - image: ruby:2.5.0
     steps:
       - checkout
 
@@ -29,7 +29,7 @@ jobs:
           no_output_timeout: 1800
   release:
     docker:
-      - image: ruby:2.4.3
+      - image: ruby:2.5.0
     steps:
       - checkout
 

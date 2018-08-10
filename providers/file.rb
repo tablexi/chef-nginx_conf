@@ -48,7 +48,7 @@ action :create do
       group nginx_group
       mode '0640'
       variables(
-        :ssl_key => new_resource.ssl['public']
+        ssl_key: new_resource.ssl['public']
       )
       notifies :run, test_nginx, new_resource.reload
     end
@@ -61,14 +61,14 @@ action :create do
       group nginx_group
       mode '0640'
       variables(
-        :ssl_key => new_resource.ssl['private']
+        ssl_key: new_resource.ssl['private']
       )
       notifies :run, test_nginx, new_resource.reload
     end
 
     ssl = {
-      :certificate => "#{node['nginx']['dir']}/ssl/#{ssl_name}.public.crt",
-      :certificate_key => "#{node['nginx']['dir']}/ssl/#{ssl_name}.private.key"
+      certificate: "#{node['nginx']['dir']}/ssl/#{ssl_name}.public.crt",
+      certificate_key: "#{node['nginx']['dir']}/ssl/#{ssl_name}.private.key",
     }
   end
 
@@ -79,15 +79,15 @@ action :create do
     source(new_resource.template || 'conf.erb')
     cookbook new_resource.template ? new_resource.cookbook.to_s : 'nginx_conf'
     variables(
-      :block => new_resource.block,
-      :options => options,
-      :upstream => upstream,
-      :listen => listen,
-      :locations => locations,
-      :root => new_resource.root,
-      :server_name => server_name,
-      :type => site_type,
-      :ssl => ssl
+      block: new_resource.block,
+      options: options,
+      upstream: upstream,
+      listen: listen,
+      locations: locations,
+      root: new_resource.root,
+      server_name: server_name,
+      type: site_type,
+      ssl: ssl
     )
     notifies :run, test_nginx, new_resource.reload
   end

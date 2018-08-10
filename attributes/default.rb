@@ -7,10 +7,10 @@ default['nginx_conf']['locations'] = {
   '/' => {
     'proxy_set_header' => {
       'X-Forwarded-For' => '$proxy_add_x_forwarded_for',
-      'Host' => '$http_host'
+      'Host' => '$http_host',
     },
     'proxy_redirect' => 'off',
-    'proxy_pass' => nil
-  }
+    'proxy_pass' => nil,
+  },
 }
 default['nginx_conf']['delete']['ssl'] = true

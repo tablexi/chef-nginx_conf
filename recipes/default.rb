@@ -37,7 +37,7 @@ Array(node['nginx_conf']['confs']).each do |site|
       'auto_enable_site' => true,
       'ssl' => nil,
       'precedence' => :default,
-      'site_type' => :dynamic
+      'site_type' => :dynamic,
     }.merge(options)
 
     nginx_conf_file name do

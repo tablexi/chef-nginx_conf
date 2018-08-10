@@ -5,13 +5,12 @@ ruby File.open(File.expand_path('.ruby-version', File.dirname(__FILE__))) { |f| 
 gem 'berkshelf'
 gem 'chef'
 gem 'cookbook_release', git: 'git@github.com:tablexi/chef-cookbook_release_tasks.git'
-gem 'ohai'
 
 group :dev do
   gem 'chef-validation'
   gem 'chefspec'
+  gem 'cookstyle'
   gem 'foodcritic'
-  gem 'rubocop'
 end
 
 group :guard do

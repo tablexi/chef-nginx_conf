@@ -14,8 +14,8 @@ group :red_green_refactor, halt_on_fail: true do
     watch('metadata.rb')
   end
 
-  guard :rubocop, :all_on_start => true do
-    watch(/.+\.rb$/)
-    watch(%r{(?:.+\/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
-  end
+	guard :rubocop, cli: "-r cookstyle" do
+		watch(%r{.+\.rb$})
+		watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
+	end
 end

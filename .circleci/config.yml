@@ -20,7 +20,7 @@ jobs:
 
       - run: bundle exec berks install
 
-      - run: bundle exec rubocop
+      - run: bundle exec cookstyle
 
       - run: bundle exec foodcritic .
 

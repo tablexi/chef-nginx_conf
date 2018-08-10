@@ -9,6 +9,6 @@ source_url 'https://github.com/tablexi/chef-nginx_conf'
 version_file = File.join(File.dirname(__FILE__), 'VERSION')
 version File.exist?(version_file) ? IO.read(version_file) : '0.0.0'
 
-%w[ubuntu debian centos redhat amazon scientific oracle fedora].each do |os|
+%w(ubuntu debian centos redhat amazon scientific oracle fedora).each do |os|
   supports os
 end

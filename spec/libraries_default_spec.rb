@@ -10,8 +10,8 @@ describe 'nginx_conf::libraries::nginx_conf_options' do
     it 'check hash' do
       options = {
         'test' => {
-          'key' => 'value'
-        }
+          'key' => 'value',
+        },
       }
       output = 'test key value;'
       expect(nginx_conf_options(options)).to eq output
@@ -20,25 +20,25 @@ describe 'nginx_conf::libraries::nginx_conf_options' do
       options = {
         'test' => {
           'key' => 'value',
-          'key1' => 'value1'
-        }
+          'key1' => 'value1',
+        },
       }
       output = ['test key value;', 'test key1 value1;'].join("\n")
       expect(nginx_conf_options(options)).to eq output
     end
     it 'check array' do
       options = {
-        'test' => [
-          '10',
-          '20'
-        ]
+        'test' => %w(
+          10
+          20
+        ),
       }
       output = ['test 10;', 'test 20;'].join("\n")
       expect(nginx_conf_options(options)).to eq output
     end
     it 'check string' do
       options = {
-        'test' => '1'
+        'test' => '1',
       }
       output = 'test 1;'
       expect(nginx_conf_options(options)).to eq output
@@ -58,9 +58,9 @@ describe 'nginx_conf::libraries::nginx_conf_options' do
       options = {
         'locations' => {
           'test' => {
-            'key' => 'value'
-          }
-        }
+            'key' => 'value',
+          },
+        },
       }
       output = <<~CFG
 
@@ -76,11 +76,11 @@ CFG
           'test' => {
             'locations' => {
               'test again' => {
-                'key' => 'value'
-              }
-            }
-          }
-        }
+                'key' => 'value',
+              },
+            },
+          },
+        },
       }
       output = <<~CFG
 
@@ -101,9 +101,9 @@ CFG
       options = {
         'if' => {
           'test' => {
-            'key' => 'value'
-          }
-        }
+            'key' => 'value',
+          },
+        },
       }
       output = <<~CFG
 
@@ -119,11 +119,11 @@ CFG
           'test' => {
             'if' => {
               'test again' => {
-                'key' => 'value'
-              }
-            }
-          }
-        }
+                'key' => 'value',
+              },
+            },
+          },
+        },
       }
       output = <<~CFG
 
@@ -144,9 +144,9 @@ CFG
       options = {
         'upstream' => {
           'test' => {
-            'key' => 'value'
-          }
-        }
+            'key' => 'value',
+          },
+        },
       }
       output = <<~CFG
 
@@ -162,11 +162,11 @@ CFG
           'test' => {
             'upstream' => {
               'test again' => {
-                'key' => 'value'
-              }
-            }
-          }
-        }
+                'key' => 'value',
+              },
+            },
+          },
+        },
       }
       output = <<~CFG
 
@@ -187,9 +187,9 @@ CFG
       options = {
         'limit_except' => {
           'test' => {
-            'key' => 'value'
-          }
-        }
+            'key' => 'value',
+          },
+        },
       }
       output = <<~CFG
 
@@ -205,11 +205,11 @@ CFG
           'test' => {
             'limit_except' => {
               'test again' => {
-                'key' => 'value'
-              }
-            }
-          }
-        }
+                'key' => 'value',
+              },
+            },
+          },
+        },
       }
       output = <<~CFG
 

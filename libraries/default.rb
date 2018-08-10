@@ -46,7 +46,7 @@ end
 def _nginx_conf_hash(option, value, level)
   indent = '  ' * level
   output = []
-  if ['locations', 'if', 'upstream', 'limit_except'].include? option
+  if %w(locations if upstream limit_except).include? option
     output << nginx_conf_options(value, level, option)
   else
     value.each do |k, v|

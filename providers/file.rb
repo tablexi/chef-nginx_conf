@@ -75,7 +75,7 @@ action :create do
   template "#{node['nginx']['dir']}/sites-available/#{conf_name}" do
     owner node['nginx']['user']
     group nginx_group
-    mode '755'
+    mode '0644'
     source(new_resource.template || 'conf.erb')
     cookbook new_resource.template ? new_resource.cookbook.to_s : 'nginx_conf'
     variables(

@@ -12,7 +12,7 @@ describe 'nginx_conf_file' do
       expect(chef_run).to create_template("#{chef_run.node[:nginx][:dir]}/sites-available/testapp1")
     end
 
-    it 'creates the template file with the correct permissions' do
+    it 'creates the template file without executability permissions' do
       expect(chef_run).to create_template("#{chef_run.node[:nginx][:dir]}/sites-available/testapp1").with(mode: '0644')
     end
 

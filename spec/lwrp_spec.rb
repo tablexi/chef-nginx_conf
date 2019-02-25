@@ -12,6 +12,10 @@ describe 'nginx_conf_file' do
       expect(chef_run).to create_template("#{chef_run.node[:nginx][:dir]}/sites-available/testapp1")
     end
 
+    it 'creates the template file without executability permissions' do
+      expect(chef_run).to create_template("#{chef_run.node[:nginx][:dir]}/sites-available/testapp1").with(mode: '0644')
+    end
+
     it 'template to notify delayed execute test' do
       expect(chef_run.template("#{chef_run.node[:nginx][:dir]}/sites-available/testapp1")).to notify('execute[test-nginx-conf-testapp1-create]').to(:run).delayed
     end

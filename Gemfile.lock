@@ -42,10 +42,10 @@ GEM
       solve (~> 4.0)
       thor (>= 0.20)
     builder (3.2.3)
-    chef (14.7.17)
+    chef (14.10.9)
       addressable
       bundler (>= 1.10)
-      chef-config (= 14.7.17)
+      chef-config (= 14.10.9)
       chef-zero (>= 13.0)
       diff-lcs (~> 1.2, >= 1.2.4)
       erubis (~> 2.7)
@@ -53,7 +53,7 @@ GEM
       ffi-yajl (~> 2.2)
       highline (~> 1.6, >= 1.6.9)
       iniparse (~> 1.4)
-      mixlib-archive (~> 0.4)
+      mixlib-archive (>= 0.4, < 2.0)
       mixlib-authentication (~> 2.1)
       mixlib-cli (~> 1.7)
       mixlib-log (~> 2.0, >= 2.0.3)
@@ -75,7 +75,7 @@ GEM
     chef-api (0.8.0)
       logify (~> 0.1)
       mime-types
-    chef-config (14.7.17)
+    chef-config (14.10.9)
       addressable
       fuzzyurl
       mixlib-config (>= 2.2.12, < 3.0)
@@ -196,7 +196,7 @@ GEM
     mini_portile2 (2.4.0)
     minitar (0.8)
     minitest (5.11.3)
-    mixlib-archive (0.4.19)
+    mixlib-archive (0.4.20)
       mixlib-log
     mixlib-authentication (2.1.1)
     mixlib-cli (1.7.0)

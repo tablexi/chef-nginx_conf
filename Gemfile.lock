@@ -170,7 +170,7 @@ GEM
     iniparse (1.4.4)
     ipaddress (0.8.3)
     jmespath (1.4.0)
-    kitchen-docker (2.7.0)
+    kitchen-docker (2.8.0)
       test-kitchen (>= 1.0.0)
     kitchen-ec2 (2.3.3)
       aws-sdk (~> 2)

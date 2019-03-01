@@ -150,8 +150,8 @@ GEM
       foodcritic (>= 8)
       guard (~> 2.12)
       guard-compat (~> 1.2)
-    guard-kitchen (0.0.2)
-      guard
+    guard-kitchen (0.1.0)
+      guard (> 2.0.0)
       mixlib-shellout
     guard-rspec (4.7.3)
       guard (~> 2.1)
@@ -259,8 +259,8 @@ GEM
     rainbow (3.0.0)
     rake (12.3.2)
     rb-fsevent (0.10.3)
-    rb-inotify (0.9.10)
-      ffi (>= 0.5.0, < 2)
+    rb-inotify (0.10.0)
+      ffi (~> 1.0)
     retriable (2.1.0)
     retryable (2.0.4)
     rspec (3.8.0)

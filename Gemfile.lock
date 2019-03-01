@@ -89,7 +89,7 @@ GEM
       mixlib-log (~> 2.0)
       rack (~> 2.0, >= 2.0.6)
       uuidtools (~> 2.1)
-    chefspec (7.3.2)
+    chefspec (7.3.4)
       chef (>= 12.16.42)
       fauxhai (>= 4)
       rspec (~> 3.0)
@@ -110,7 +110,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday-http-cache (2.0.0)
       faraday (~> 0.8)
-    fauxhai (6.7.0)
+    fauxhai (7.0.0)
       net-ssh
     ffi (1.10.0)
     ffi-yajl (2.3.1)
@@ -196,7 +196,7 @@ GEM
     mini_portile2 (2.4.0)
     minitar (0.8)
     minitest (5.11.3)
-    mixlib-archive (0.4.19)
+    mixlib-archive (0.4.20)
       mixlib-log
     mixlib-authentication (2.1.1)
     mixlib-cli (1.7.0)

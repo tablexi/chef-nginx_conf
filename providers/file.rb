@@ -1,4 +1,4 @@
-use_inline_resources
+
 
 action :create do
   listen = Array(new_resource.listen || node['nginx_conf']['listen'])
@@ -32,7 +32,7 @@ action :create do
   end
 
   if new_resource.ssl
-    ssl_name = new_resource.ssl['name'] ? new_resource.ssl['name'] : conf_name
+    ssl_name = new_resource.ssl['name'] || conf_name
 
     directory "#{node['nginx']['dir']}/ssl" do
       owner node['nginx']['user']

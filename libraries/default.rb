@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: nginx_conf
+# Cookbook:: nginx_conf
 # Library:: default
 #
-# Copyright 2012, Firebelly Design
+# Copyright:: 2012, Firebelly Design
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -5,7 +5,7 @@ describe 'nginx_conf::default' do
 
   describe 'attributes' do
     before do
-      @chef_run.node[:nginx_conf][:confs] = {
+      @chef_run.node['nginx_conf'][:confs] = {
         'testapp1' => {
           'block' => 'testapp1 block',
           'cookbook' => 'testapp1 cookbook',

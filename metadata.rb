@@ -3,7 +3,6 @@ maintainer 'Table XI'
 maintainer_email 'sysadmins@tablexi.com'
 license 'GPL-3.0'
 description 'Installs/Configures nginx_conf'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 issues_url 'https://github.com/tablexi/chef-nginx_conf/issues'
 source_url 'https://github.com/tablexi/chef-nginx_conf'
 version_file = File.join(File.dirname(__FILE__), 'VERSION')

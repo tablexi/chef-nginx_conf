@@ -1,0 +1,24 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "23:00"
+    timezone: America/Chicago
+  pull-request-branch-name:
+    separator: "-"
+  open-pull-requests-limit: 99
+  ignore:
+  - dependency-name: activesupport
+    versions:
+    - 6.1.0
+    - 6.1.1
+    - 6.1.3
+  - dependency-name: nokogiri
+    versions:
+    - 1.11.0
+    - 1.11.1
+  - dependency-name: excon
+    versions:
+    - 0.78.1
